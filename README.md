@@ -1,3 +1,3 @@
 NfcToolz
 ========
-App to learn how Android hands NFC technology.
+Android NFC technology basics.
