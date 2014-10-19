@@ -27,7 +27,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); setContentView(R.layout.activity_main);
 
-
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         initNfc();
@@ -39,7 +38,6 @@ public class MainActivity extends Activity {
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
         IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED); try {
-            /* Handles all MIME based dispatches. You should specify only the ones that you need. */
             ndef.addDataType("*/*"); ndef.addCategory("DEFAULT");
         } catch (MalformedMimeTypeException e) {
             throw new RuntimeException("fail", e);
