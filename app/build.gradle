@@ -1,4 +1,34 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4+'
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+dependencies {
+    apt "org.androidannotations:androidannotations:3.1+"
+    compile "org.androidannotations:androidannotations-api:3.1+"
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.processResources.manifestFile
+        resourcePackageName "com.athome.zubaliy.nfctoolz"
+    }
+}
 
 android {
     compileSdkVersion 20
@@ -19,6 +49,6 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-}
+
+
+
