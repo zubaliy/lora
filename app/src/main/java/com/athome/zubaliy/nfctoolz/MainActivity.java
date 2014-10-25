@@ -11,10 +11,16 @@ import android.nfc.tech.NfcA;
 import android.nfc.tech.NdefFormatable;
 import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.provider.CalendarContract.Events;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import org.androidannotations.annotations.Click;
 
 public class MainActivity extends Activity {
 
@@ -23,36 +29,36 @@ public class MainActivity extends Activity {
     private IntentFilter[] intentFiltersArray;
     private String[][] techList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); setContentView(R.layout.activity_main);
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        initNfc();
-        enableTagInterception();
+        initNfc(); enableTagInterception();
     }
 
     private void enableTagInterception() {
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-    IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED); try {
-        ndef.addDataType("*/*"); ndef.addCategory("DEFAULT");
-    } catch (MalformedMimeTypeException e) {
-        throw new RuntimeException("fail", e);
-    }
+        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED); try {
+            ndef.addDataType("*/*"); ndef.addCategory("DEFAULT");
+        } catch (MalformedMimeTypeException e) {
+            throw new RuntimeException("fail", e);
+        }
 
-    IntentFilter tech = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
+        IntentFilter tech = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
 
 
-    intentFiltersArray = new IntentFilter[]{ndef, tech};
+        intentFiltersArray = new IntentFilter[]{ndef, tech};
 
-    String[] techLists1 = new String[]{Ndef.class.getName(), NfcA.class.getName(),
-            MifareUltralight.class.getName()};
-    String[] techLists2 = new String[]{NdefFormatable.class.getName(), NfcA.class.getName(),
-            MifareUltralight.class.getName()};
-    techList = new String[][]{techLists1, techLists2};
+        String[] techLists1 = new String[]{Ndef.class.getName(), NfcA.class.getName(),
+                MifareUltralight.class.getName()};
+        String[] techLists2 = new String[]{NdefFormatable.class.getName(), NfcA.class.getName(),
+                MifareUltralight.class.getName()};
+        techList = new String[][]{techLists1, techLists2};
 
     }
 
@@ -71,10 +77,33 @@ public class MainActivity extends Activity {
 
     }
 
-    private void handleIntent(Intent intent) {
-
+    private void handleIntent(Intent nfcIntent) {
         Toast.makeText(this, "New intent detected", Toast.LENGTH_SHORT).show();
 
+
+        addCalendarEvent();
+
+
+    }
+
+    @Click({R.id.btn_add_reminder})
+    private void addCalendarEvent() {
+        Intent calIntent = new Intent(Intent.ACTION_INSERT);
+        calIntent.setType("vnd.android.cursor.item/event");
+        calIntent.putExtra(Events.TITLE, "Finish your work");
+        calIntent.putExtra(Events.DESCRIPTION, "I already worked 8 hours. It is enough for to day. I have to finish "
+                + "my work.");
+
+
+        GregorianCalendar calDate = new GregorianCalendar();
+        calDate.add(GregorianCalendar.HOUR_OF_DAY, 8);
+        calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calDate.getTimeInMillis());
+        calDate.add(Calendar.MINUTE, 30);
+        calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calDate.getTimeInMillis());
+
+        calIntent.setData(Events.CONTENT_URI);
+
+        startActivity(calIntent);
     }
 
     @Override
@@ -99,15 +128,13 @@ public class MainActivity extends Activity {
     }
 
     public void onPause() {
-        super.onPause();
-        if(nfcAdapter != null) {
+        super.onPause(); if (nfcAdapter != null) {
             nfcAdapter.disableForegroundDispatch(this);
         }
     }
 
     public void onResume() {
-        super.onResume();
-        if(nfcAdapter != null) {
+        super.onResume(); if (nfcAdapter != null) {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techList);
         }
     }
