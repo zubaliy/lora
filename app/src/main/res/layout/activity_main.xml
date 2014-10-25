@@ -23,6 +23,7 @@
         android:layout_marginTop="94dp"
         android:layout_below="@+id/tekst"
         android:layout_centerHorizontal="true"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:textColor="@color/accent_material_light"/>
 
 </RelativeLayout>
