@@ -17,11 +17,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.provider.CalendarContract.Events;
 
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.androidannotations.annotations.Click;
 
+@EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
 
     private NfcAdapter nfcAdapter;
@@ -92,8 +95,8 @@ public class MainActivity extends Activity {
 
     }
 
-    @Click({R.id.btn_add_reminder})
-    private void addCalendarEvent() {
+    @Click(R.id.btn_add_reminder)
+    public void addCalendarEvent() {
         Intent calIntent = new Intent(Intent.ACTION_INSERT);
         calIntent.setType("vnd.android.cursor.item/event");
         calIntent.putExtra(Events.TITLE, "Finish your work");
