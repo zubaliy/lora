@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">NfcToolz</string>
+    <string name="app_name">FinishWorkingDay</string>
     <string name="hello_world">Hello World!</string>
-    <string name="add_reminder">Add reminder</string>
+    <string name="add_reminder">Add stop work reminder</string>
     <string name="action_settings">Settings</string>
 
 </resources>
