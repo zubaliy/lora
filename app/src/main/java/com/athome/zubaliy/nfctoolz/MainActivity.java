@@ -32,19 +32,23 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        initNfc(); enableTagInterception();
+        initNfc();
+        enableTagInterception();
     }
 
     private void enableTagInterception() {
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
                 getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED); try {
-            ndef.addDataType("*/*"); ndef.addCategory("DEFAULT");
+        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        try {
+            ndef.addDataType("*/*");
+            ndef.addCategory("DEFAULT");
         } catch (MalformedMimeTypeException e) {
             throw new RuntimeException("fail", e);
         }
@@ -65,7 +69,9 @@ public class MainActivity extends Activity {
     private void initNfc() {
         if (nfcAdapter == null) {
             // Stop here, we definitely need NFC
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show(); finish(); return;
+            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
 
         }
 
@@ -114,7 +120,8 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu); return true;
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
@@ -122,19 +129,23 @@ public class MainActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId(); if (id == R.id.action_settings) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
             return true;
-        } return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void onPause() {
-        super.onPause(); if (nfcAdapter != null) {
+        super.onPause();
+        if (nfcAdapter != null) {
             nfcAdapter.disableForegroundDispatch(this);
         }
     }
 
     public void onResume() {
-        super.onResume(); if (nfcAdapter != null) {
+        super.onResume();
+        if (nfcAdapter != null) {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techList);
         }
     }
