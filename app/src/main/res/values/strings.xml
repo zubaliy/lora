@@ -3,6 +3,7 @@
 
     <string name="app_name">NfcToolz</string>
     <string name="hello_world">Hello World!</string>
+    <string name="add_reminder">Add reminder</string>
     <string name="action_settings">Settings</string>
 
 </resources>
