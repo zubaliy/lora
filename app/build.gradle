@@ -20,6 +20,11 @@ dependencies {
     apt "org.androidannotations:androidannotations:3.1+"
     compile "org.androidannotations:androidannotations-api:3.1+"
     compile "com.android.support:appcompat-v7:21.0.+"
+    compile "com.j256.ormlite:ormlite-android:4.48"
+    compile "com.j256.ormlite:ormlite-core:4.48"
+
+    provided "org.projectlombok:lombok:1.12.6"
+    apt "org.projectlombok:lombok:1.12.6"
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
@@ -27,7 +32,7 @@ dependencies {
 apt {
     arguments {
         androidManifestFile variant.processResources.manifestFile
-        resourcePackageName "com.athome.zubaliy.nfctoolz"
+        resourcePackageName "com.athome.zubaliy.mylifeontheroad"
     }
 }
 
@@ -36,7 +41,7 @@ android {
     buildToolsVersion "21.0.0"
 
     defaultConfig {
-        applicationId "com.athome.zubaliy.nfctoolz"
+        applicationId "com.athome.zubaliy.mylifeontheroad"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1

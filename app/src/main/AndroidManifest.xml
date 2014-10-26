@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.athome.zubaliy.nfctoolz">
+    package="com.athome.zubaliy.mylifeontheroad">
 
     <uses-permission android:name="android.permission.NFC" />
     <uses-feature android:name="android.hardware.nfc" android:required="true" />
@@ -18,7 +18,7 @@
 
 
         <activity
-            android:name=".MainActivity_"
+            android:name="com.athome.zubaliy.mylifeontheroad.MainActivity_"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
