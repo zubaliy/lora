@@ -1,4 +1,4 @@
-package com.athome.zubaliy.nfctoolz;
+package com.athome.zubaliy.mylifeontheroad;
 
 import android.app.Activity;
 import android.app.PendingIntent;
