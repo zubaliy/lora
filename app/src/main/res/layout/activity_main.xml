@@ -18,12 +18,23 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_reminder"
-        android:id="@+id/btn_add_reminder"
-        android:layout_marginTop="94dp"
+        android:text="@string/connected"
+        android:id="@+id/btn_connected"
         android:layout_below="@+id/tekst"
-        android:layout_centerHorizontal="true"
-        android:textSize="30sp"
-        android:textColor="@color/accent_material_light"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="62dp"
+        android:textSize="14sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/disconnected"
+        android:id="@+id/btn_disconnected"
+        android:layout_marginTop="31dp"
+        android:textSize="14sp"
+        android:layout_below="@+id/btn_connected"
+        android:layout_alignLeft="@+id/btn_connected"
+        android:layout_alignStart="@+id/btn_connected"/>
 
 </RelativeLayout>
