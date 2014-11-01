@@ -17,7 +17,6 @@ public class ActivityLog {
 
     @DatabaseField(generatedId = true)
     private Integer id;
-    //    @DatabaseField(dataType = DataType.DATE_STRING)
     @DatabaseField
     private Date connected;
     @DatabaseField
@@ -29,5 +28,14 @@ public class ActivityLog {
     public ActivityLog() {
         // ORMLite needs a no-arg constructor
     }
+
+    /**
+     * Constructor with connected time
+     * @param connected the
+     */
+    public ActivityLog(Date connected) {
+        this.connected = connected;
+    }
+
 
 }
