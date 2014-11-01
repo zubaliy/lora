@@ -17,14 +17,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 dependencies {
-    apt "org.androidannotations:androidannotations:3.1+"
-    compile "org.androidannotations:androidannotations-api:3.1+"
-    compile "com.android.support:appcompat-v7:21.0.+"
-    compile "com.j256.ormlite:ormlite-android:4.48"
-    compile "com.j256.ormlite:ormlite-core:4.48"
+    apt 'org.androidannotations:androidannotations:3.1+'
+    compile 'org.androidannotations:androidannotations-api:3.1+'
+    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
+    compile 'com.j256.ormlite:ormlite-core:4.48'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'org.apache.commons:commons-collections4:4.0'
 
-    provided "org.projectlombok:lombok:1.12.6"
-    apt "org.projectlombok:lombok:1.12.6"
+    provided 'org.projectlombok:lombok:1.12.6'
+    apt 'org.projectlombok:lombok:1.12.6'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
@@ -32,20 +34,20 @@ dependencies {
 apt {
     arguments {
         androidManifestFile variant.processResources.manifestFile
-        resourcePackageName "com.athome.zubaliy.mylifeontheroad"
+        resourcePackageName 'com.athome.zubaliy.mylifeontheroad'
     }
 }
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.0"
+    buildToolsVersion '21.0.0'
 
     defaultConfig {
-        applicationId "com.athome.zubaliy.mylifeontheroad"
+        applicationId 'com.athome.zubaliy.mylifeontheroad'
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
     buildTypes {
         release {
@@ -53,8 +55,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
 
+    //exlude duplicate file from apache commons
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+}
 
 
 
