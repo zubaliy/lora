@@ -19,51 +19,47 @@ import com.athome.zubaliy.sqlite.model.ActivityLog;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Receiver;
 
 import java.util.GregorianCalendar;
 
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "zMainActivity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i(TAG, "Activity started");
 
         Log.i(TAG, Bluetooth.getInstance().getBondenDevices());
 
-        IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
-        IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
-        IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        this.registerReceiver(mReceiver, filter1);
-        this.registerReceiver(mReceiver, filter2);
-        this.registerReceiver(mReceiver, filter3);
-
         ActivityLogManager.init(this);
+
 
     }
 
 
-    @Click(R.id.btn_connected)
-    public void connected() {
+//    @Click(R.id.btn_connected)
+    @Receiver(actions = "android.bluetooth.device.action.ACL_CONNECTED")
+    protected void connected() {
         Toast.makeText(this, "connected", Toast.LENGTH_LONG).show();
         Log.i(TAG, "connected");
-        GregorianCalendar calendar = new GregorianCalendar();
 
+        GregorianCalendar calendar = new GregorianCalendar();
 
         ActivityLog log = new ActivityLog(calendar.getTime());
         ActivityLogManager.getInstance().addLog(log);
 
-        Log.i(TAG, ActivityLogManager.getInstance().getAllLogs().toString());
-
-
+        Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
     }
 
-    @Click(R.id.btn_disconnected)
-    public void disconnected() {
+//    @Click(R.id.btn_disconnected)
+    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
+    protected void disconnected() {
         Toast.makeText(this, "disconnected", Toast.LENGTH_LONG).show();
         Log.i(TAG, "disconnected");
 
@@ -103,32 +99,5 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
     }
-
-    //The BroadcastReceiver that listens for bluetooth broadcasts
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if(Config.DEBUG) {
-                Log.d(TAG, "intent action: " + action);
-            }
-
-
-            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                //Device is now connected
-                if(Config.DEBUG) {
-                    Log.d(TAG, "ACTION_ACL_CONNECTED");
-                }
-            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                //Device has disconnected
-                if(Config.DEBUG) {
-                    Log.d(TAG, "ACTION_ACL_DISCONNECTED");
-                }
-            }
-        }
-    };
-
 
 }
