@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.athome.zubaliy.sqlite.model.ActivityLog;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -59,7 +61,7 @@ public class ActivityLogManager {
         return log;
     }
 
-    public void addLog(ActivityLog log){
+    public void addLog(ActivityLog log) {
         try {
             helper.getActivityLogDao().create(log);
         } catch (SQLException e) {
@@ -73,6 +75,22 @@ public class ActivityLogManager {
         } catch (SQLException e) {
             Log.d(TAG, e.toString());
         }
+    }
+
+    public ActivityLog getLastLog() {
+
+        QueryBuilder<ActivityLog, Integer> builder = helper.getActivityLogDao().queryBuilder();
+        builder.orderBy("id", false);
+        builder.limit(1L);
+
+        List<ActivityLog> logs = null;
+        try {
+            logs = helper.getActivityLogDao().query(builder.prepare());
+        } catch (SQLException e) {
+            Log.d(TAG, e.toString());
+        }
+
+        return logs.get(0);
     }
 
 }
