@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
 import com.athome.zubaliy.Util.Config;
-import com.athome.zubaliy.Util.LOG;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.http.client.utils.CloneUtils;
@@ -39,9 +38,9 @@ public class Bluetooth {
 
 
         if (bluetoothAdapter == null) {
-            LOG.debug(TAG, "Device does not support Bluetooth.");
+            Log.d(TAG, "Device does not support Bluetooth.");
         } else {
-            LOG.debug(TAG, "Device supports Bluetooth.");
+            Log.d(TAG, "Device supports Bluetooth.");
             enableBluetooth();
         }
     }
@@ -58,9 +57,9 @@ public class Bluetooth {
         Set<String> bondenDevices = new HashSet<String>();
         // If there are paired devices
         if (CollectionUtils.isNotEmpty(pairedDevices)) {
-            LOG.debug(TAG, "Paired devices:");
+            Log.d(TAG, "Paired devices:");
             for (BluetoothDevice device : pairedDevices) {
-                LOG.debug(TAG, device.getName() + " - " + device.getAddress());
+                Log.d(TAG, device.getName() + " - " + device.getAddress());
                 bondenDevices.add(device.getName() + " - " + device.getAddress());
             }
         }
