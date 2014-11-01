@@ -4,10 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
-import com.athome.zubaliy.Util.Config;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.http.client.utils.CloneUtils;
 
 import java.util.HashSet;
 import java.util.Set;

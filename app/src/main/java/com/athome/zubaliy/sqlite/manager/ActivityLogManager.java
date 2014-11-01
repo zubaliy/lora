@@ -1,11 +1,9 @@
 package com.athome.zubaliy.sqlite.manager;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import com.athome.zubaliy.sqlite.model.ActivityLog;
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
