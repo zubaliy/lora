@@ -7,7 +7,9 @@ import android.util.Log;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -50,18 +52,19 @@ public class Bluetooth {
     }
 
 
-    public String getBondenDevices() {
+    public Map<String, String> getBondenDevices() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        Set<String> bondenDevices = new HashSet<String>();
+        Map<String, String> bondenDevices = new HashMap<String, String>();
         // If there are paired devices
         if (CollectionUtils.isNotEmpty(pairedDevices)) {
             Log.d(TAG, "Paired devices:");
             for (BluetoothDevice device : pairedDevices) {
                 Log.d(TAG, device.getName() + " - " + device.getAddress());
-                bondenDevices.add(device.getName() + " - " + device.getAddress());
+                bondenDevices.put(device.getAddress(), device.getName());
             }
         }
 
-        return bondenDevices.toString();
+
+        return bondenDevices;
     }
 }
