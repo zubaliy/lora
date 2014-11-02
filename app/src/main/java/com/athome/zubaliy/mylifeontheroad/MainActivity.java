@@ -20,6 +20,7 @@ import com.athome.zubaliy.sqlite.model.ActivityLog;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Receiver;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.GregorianCalendar;
 
@@ -38,17 +39,34 @@ public class MainActivity extends Activity {
         Log.i(TAG, Bluetooth.getInstance().getBondenDevices());
 
         ActivityLogManager.init(this);
-
-
     }
 
 
-//    @Click(R.id.btn_connected)
+    //    @Click(R.id.btn_connected)
     @Receiver(actions = "android.bluetooth.device.action.ACL_CONNECTED")
-    protected void connected() {
-        Toast.makeText(this, "connected", Toast.LENGTH_LONG).show();
-        Log.i(TAG, "connected");
+    protected void bluetoothConnected(Intent intent) {
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
+        if (Config.DEBUG) {
+            Log.i(TAG, "connected");
+            Log.i(TAG, "intent.action = " + intent.getAction());
+
+            Log.i(TAG, "device.name = " + device.getName());
+            Log.i(TAG, "device.address = " + device.getAddress());
+            Log.i(TAG, "device.bluetooth_class = " + device.getBluetoothClass());
+            Log.i(TAG, "device.type = " + device.getType());
+            for (int i = 0; i < device.getUuids().length; i++) {
+                Log.i(TAG, "device.uuid " + i + " = " + device.getUuids()[i]);
+            }
+        }
+
+        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
+            connected();
+        }
+    }
+
+    public void connected() {
+        Toast.makeText(this, "connected", Toast.LENGTH_LONG).show();
         GregorianCalendar calendar = new GregorianCalendar();
 
         ActivityLog log = new ActivityLog(calendar.getTime());
@@ -57,11 +75,8 @@ public class MainActivity extends Activity {
         Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
     }
 
-//    @Click(R.id.btn_disconnected)
-    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
-    protected void disconnected() {
+    public void disconnected() {
         Toast.makeText(this, "disconnected", Toast.LENGTH_LONG).show();
-        Log.i(TAG, "disconnected");
 
         GregorianCalendar calendar = new GregorianCalendar();
 
@@ -72,6 +87,31 @@ public class MainActivity extends Activity {
 
         Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
     }
+
+    //    @Click(R.id.btn_disconnected)
+    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
+    protected void bluetoothDisconnected(Intent intent) {
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+        if (Config.DEBUG) {
+            Log.i(TAG, "disconnected");
+            Log.i(TAG, "intent.action = " + intent.getAction());
+
+            Log.i(TAG, "device.name = " + device.getName());
+            Log.i(TAG, "device.address = " + device.getAddress());
+            Log.i(TAG, "device.bluetooth_class = " + device.getBluetoothClass());
+            Log.i(TAG, "device.type = " + device.getType());
+            for (int i = 0; i < device.getUuids().length; i++) {
+                Log.i(TAG, "device.uuid " + i + " = " + device.getUuids()[i]);
+            }
+        }
+
+        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
+            disconnected();
+        }
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
