@@ -26,11 +26,15 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.Receiver;
 import org.androidannotations.annotations.ViewById;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.GregorianCalendar;
 import java.util.Map;
 
+/**
+ * The main activity, where all starts.
+ */
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
@@ -41,6 +45,9 @@ public class MainActivity extends Activity {
 
     @ViewById(R.id.txt_bluetooth_device)
     public TextView zDevice;
+
+    @ViewById(R.id.txt_console)
+    public TextView zConsole;
 
 
     @Override
@@ -56,9 +63,12 @@ public class MainActivity extends Activity {
         ActivityLogManager.init(this);
     }
 
+    /**
+     * Reload view, text, colors and other defaults
+     */
     public void initView() {
-        String deviceName = Bluetooth.getInstance().getBondenDevices().get(Utils.readPreferences(AppKey
-                .DEVICE_MAC_ADDRESS.getKey()));
+        Config.bluetoothMAC = Utils.readPreferences(AppKey.DEVICE_MAC_ADDRESS.getKey());
+        String deviceName = Bluetooth.getInstance().getBondenDevices().get(Config.bluetoothMAC);
         zDevice.setText(deviceName);
     }
 
@@ -75,6 +85,7 @@ public class MainActivity extends Activity {
                 // Do something with the selection
                 Utils.savePreferences(AppKey.DEVICE_MAC_ADDRESS.getKey(), macs[item]);
                 zDevice.setText(names[item]);
+                Config.bluetoothMAC = macs[item];
             }
         });
         AlertDialog alert = builder.create();
@@ -87,13 +98,36 @@ public class MainActivity extends Activity {
     protected void bluetoothConnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
+        logInfoAboutBluetoothDevice(intent, device);
+
+        zConsole.append("connected to " + device.getName());
+        zConsole.append("\n");
 
         if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
             connected();
         }
+
+    }
+
+    private void logInfoAboutBluetoothDevice(Intent intent, BluetoothDevice device) {
+        if (Config.DEBUG) {
+            Log.d(TAG, "intent.action = " + intent.getAction());
+
+            Log.d(TAG, "device.name = " + device.getName());
+            Log.d(TAG, "device.address = " + device.getAddress());
+            Log.d(TAG, "device.bluetooth_class = " + device.getBluetoothClass());
+            Log.d(TAG, "device.type = " + device.getType());
+            if (device.getUuids() != null) {
+                for (int i = 0; i < device.getUuids().length; i++) {
+                    Log.d(TAG, "device.uuid " + i + " = " + device.getUuids()[i]);
+                }
+            }
+        }
     }
 
     public void connected() {
+        Log.i(TAG, "connected");
+
         Toast.makeText(this, "connected", Toast.LENGTH_LONG).show();
         GregorianCalendar calendar = new GregorianCalendar();
 
@@ -104,6 +138,7 @@ public class MainActivity extends Activity {
     }
 
     public void disconnected() {
+        Log.i(TAG, "disconnected");
         Toast.makeText(this, "disconnected", Toast.LENGTH_LONG).show();
 
         GregorianCalendar calendar = new GregorianCalendar();
@@ -120,6 +155,10 @@ public class MainActivity extends Activity {
     protected void bluetoothDisconnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
+        logInfoAboutBluetoothDevice(intent, device);
+
+        zConsole.append("disconnected from " + device.getName());
+        zConsole.append("\n");
 
         if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
             disconnected();
@@ -129,6 +168,8 @@ public class MainActivity extends Activity {
 
 
 
+
+ 
 
     public void onPause() {
         super.onPause();
