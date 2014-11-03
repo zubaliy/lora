@@ -45,5 +45,12 @@
         android:layout_below="@+id/tekst"
         android:layout_centerHorizontal="true"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text=""
+        android:id="@+id/txt_console"
+        android:layout_alignParentBottom="true"/>
+
 
 </RelativeLayout>
