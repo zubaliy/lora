@@ -87,18 +87,6 @@ public class MainActivity extends Activity {
     protected void bluetoothConnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-        if (Config.DEBUG) {
-            Log.i(TAG, "connected");
-            Log.i(TAG, "intent.action = " + intent.getAction());
-
-            Log.i(TAG, "device.name = " + device.getName());
-            Log.i(TAG, "device.address = " + device.getAddress());
-            Log.i(TAG, "device.bluetooth_class = " + device.getBluetoothClass());
-            Log.i(TAG, "device.type = " + device.getType());
-            for (int i = 0; i < device.getUuids().length; i++) {
-                Log.i(TAG, "device.uuid " + i + " = " + device.getUuids()[i]);
-            }
-        }
 
         if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
             connected();
@@ -132,18 +120,6 @@ public class MainActivity extends Activity {
     protected void bluetoothDisconnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-        if (Config.DEBUG) {
-            Log.i(TAG, "disconnected");
-            Log.i(TAG, "intent.action = " + intent.getAction());
-
-            Log.i(TAG, "device.name = " + device.getName());
-            Log.i(TAG, "device.address = " + device.getAddress());
-            Log.i(TAG, "device.bluetooth_class = " + device.getBluetoothClass());
-            Log.i(TAG, "device.type = " + device.getType());
-            for (int i = 0; i < device.getUuids().length; i++) {
-                Log.i(TAG, "device.uuid " + i + " = " + device.getUuids()[i]);
-            }
-        }
 
         if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
             disconnected();
@@ -152,24 +128,7 @@ public class MainActivity extends Activity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void onPause() {
         super.onPause();
