@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import lombok.Setter;
 
 /**
  * Utils for easy using of:
@@ -14,21 +13,20 @@ import lombok.Setter;
  */
 public class Utils {
 
-    private static Activity activity;
+    private static Activity zActivity;
     private static SharedPreferences sp;
 
     /**
-     * The utils should be first initialized
+     * Init utils to make reading and writing of shared preferences possible.
      *
      * @param activity the
      */
     public static void init(Activity activity) {
-        activity = activity;
+        zActivity = activity;
         sp = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
     }
 
     public static void savePreferences(Activity activity, String key, String value) {
-
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);
         editor.commit();
@@ -40,11 +38,11 @@ public class Utils {
     }
 
     public static void savePreferences(String key, String value) {
-        savePreferences(activity, key, value);
+        savePreferences(zActivity, key, value);
     }
 
     public static String readPreferences(String key, String defaultValue) {
-        return readPreferences(activity, key, defaultValue);
+        return readPreferences(zActivity, key, defaultValue);
     }
 
     public static String readPreferences(String key) {
