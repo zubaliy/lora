@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.athome.zubaliy.service.ActivityTrackingService_;
 import com.athome.zubaliy.util.AndroidDatabaseManager;
 import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
@@ -20,6 +21,7 @@ import com.athome.zubaliy.service.ActivityTrackingService;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
 
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.Receiver;
@@ -37,8 +39,6 @@ import java.util.Map;
 public class MainActivity extends Activity {
     private static final String TAG = "zMainActivity";
 
-    @ViewById(R.id.btn_connected)
-    public Button zButton;
 
     @ViewById(R.id.txt_bluetooth_device)
     public TextView zDevice;
@@ -172,15 +172,17 @@ public class MainActivity extends Activity {
     /**
      * Method to start the service
      */
+    @Click(R.id.btnStartService)
     public void startService() {
-        startService(new Intent(this, ActivityTrackingService.class));
+        startService(new Intent(this, ActivityTrackingService_.class));
     }
 
     /**
      * Method to stop the service
      */
+    @Click(R.id.btnStopService)
     public void stopService() {
-        stopService(new Intent(this, ActivityTrackingService.class));
+        stopService(new Intent(this, ActivityTrackingService_.class));
     }
 
 
