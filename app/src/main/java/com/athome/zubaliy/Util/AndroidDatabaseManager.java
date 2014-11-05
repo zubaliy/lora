@@ -1,4 +1,4 @@
-package com.athome.zubaliy.Util;
+package com.athome.zubaliy.util;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

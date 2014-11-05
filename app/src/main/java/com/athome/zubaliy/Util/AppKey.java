@@ -1,6 +1,4 @@
-package com.athome.zubaliy.Util;
-
-import org.androidannotations.annotations.App;
+package com.athome.zubaliy.util;
 
 /**
  * Created by zubaliy on 02/11/14.

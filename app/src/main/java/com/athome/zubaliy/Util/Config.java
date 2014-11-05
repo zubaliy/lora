@@ -1,4 +1,4 @@
-package com.athome.zubaliy.Util;
+package com.athome.zubaliy.util;
 
 /**
  * Created by zubaliy on 28/10/14.

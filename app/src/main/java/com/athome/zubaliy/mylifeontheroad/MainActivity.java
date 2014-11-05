@@ -7,26 +7,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.athome.zubaliy.Util.AppKey;
-import com.athome.zubaliy.Util.Config;
-import com.athome.zubaliy.Util.Utils;
+import com.athome.zubaliy.util.AndroidDatabaseManager;
+import com.athome.zubaliy.util.AppKey;
+import com.athome.zubaliy.util.Config;
+import com.athome.zubaliy.util.Utils;
 import com.athome.zubaliy.bluetooth.Bluetooth;
+import com.athome.zubaliy.service.ActivityTrackingService;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.Receiver;
 import org.androidannotations.annotations.ViewById;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.GregorianCalendar;
@@ -172,10 +169,20 @@ public class MainActivity extends Activity {
 
     }
 
+    /**
+     * Method to start the service
+     */
+    public void startService() {
+        startService(new Intent(this, ActivityTrackingService.class));
+    }
 
+    /**
+     * Method to stop the service
+     */
+    public void stopService() {
+        stopService(new Intent(this, ActivityTrackingService.class));
+    }
 
-
- 
 
     public void onPause() {
         super.onPause();
