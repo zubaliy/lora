@@ -15,26 +15,9 @@
         android:id="@+id/tekst"
         android:textSize="60dip"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/connected"
-        android:id="@+id/btn_connected"
-        android:textSize="14sp"
-        android:layout_below="@+id/txt_bluetooth_device"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="57dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/disconnected"
-        android:id="@+id/btn_disconnected"
-        android:layout_marginTop="31dp"
-        android:textSize="14sp"
-        android:layout_below="@+id/btn_connected"
-        android:layout_alignLeft="@+id/btn_connected"
-        android:layout_alignStart="@+id/btn_connected"/>
+
+
 
     <TextView
         android:text="@string/choose_device"
@@ -51,6 +34,20 @@
         android:text=""
         android:id="@+id/txt_console"
         android:layout_alignParentBottom="true"/>
+
+    <Button android:id="@+id/btnStartService"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/start_service"
+            android:layout_below="@+id/txt_bluetooth_device"
+            android:onClick="startService"/>
+
+    <Button android:id="@+id/btnStopService"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stop_service"
+            android:layout_below="@+id/btnStartService"
+            android:onClick="stopService" />
 
 
 </RelativeLayout>
