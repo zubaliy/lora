@@ -128,6 +128,21 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
+    protected void bluetoothDisconnected(Intent intent) {
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+        logInfoAboutBluetoothDevice(intent, device);
+
+        zConsole.append("disconnected from " + device.getName());
+        zConsole.append("\n");
+
+        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
+            disconnected();
+        }
+
+    }
+
     public void connected() {
         Log.i(TAG, "connected");
 
@@ -154,20 +169,6 @@ public class MainActivity extends Activity {
         Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
     }
 
-    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
-    protected void bluetoothDisconnected(Intent intent) {
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-        logInfoAboutBluetoothDevice(intent, device);
-
-        zConsole.append("disconnected from " + device.getName());
-        zConsole.append("\n");
-
-        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
-            disconnected();
-        }
-
-    }
 
     /**
      * Method to start the service

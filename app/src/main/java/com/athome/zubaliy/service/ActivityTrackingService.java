@@ -65,6 +65,16 @@ public class ActivityTrackingService extends Service {
 
     }
 
+    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
+    protected void bluetoothDisconnected(Intent intent) {
+        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
+            disconnected();
+        }
+
+    }
+
     public void connected() {
         Log.i(TAG, "connected");
 
@@ -91,13 +101,5 @@ public class ActivityTrackingService extends Service {
         Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
     }
 
-    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
-    protected void bluetoothDisconnected(Intent intent) {
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
-            disconnected();
-        }
-
-    }
 }
