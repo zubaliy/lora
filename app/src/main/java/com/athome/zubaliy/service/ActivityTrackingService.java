@@ -29,12 +29,8 @@ public class ActivityTrackingService extends Service {
 
     @Override
     public void onCreate() {
+        Log.i(TAG, "Service created");
 
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return 0;
     }
 
     @Override
@@ -43,35 +39,30 @@ public class ActivityTrackingService extends Service {
         return null;
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "Service Started");
+        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+        // Let it continue running until it is stopped.
+        return START_STICKY;
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "Service Destroyed");
+        Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
+    }
 
 
     @Receiver(actions = "android.bluetooth.device.action.ACL_CONNECTED")
     protected void bluetoothConnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-        logInfoAboutBluetoothDevice(intent, device);
-
         if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
             connected();
         }
 
-    }
-
-    private void logInfoAboutBluetoothDevice(Intent intent, BluetoothDevice device) {
-        if (Config.DEBUG) {
-            Log.d(TAG, "intent.action = " + intent.getAction());
-
-            Log.d(TAG, "device.name = " + device.getName());
-            Log.d(TAG, "device.address = " + device.getAddress());
-            Log.d(TAG, "device.bluetooth_class = " + device.getBluetoothClass());
-            Log.d(TAG, "device.type = " + device.getType());
-            if (device.getUuids() != null) {
-                for (int i = 0; i < device.getUuids().length; i++) {
-                    Log.d(TAG, "device.uuid " + i + " = " + device.getUuids()[i]);
-                }
-            }
-        }
     }
 
     public void connected() {
@@ -103,8 +94,6 @@ public class ActivityTrackingService extends Service {
     @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
     protected void bluetoothDisconnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-        logInfoAboutBluetoothDevice(intent, device);
 
         if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
             disconnected();
