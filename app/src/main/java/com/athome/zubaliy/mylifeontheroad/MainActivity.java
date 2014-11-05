@@ -63,6 +63,12 @@ public class MainActivity extends Activity {
         ActivityLogManager.init(this);
     }
 
+    @LongClick(R.id.tekst)
+    public void showDbManager() {
+        Intent dbmanager = new Intent(this, AndroidDatabaseManager.class);
+        startActivity(dbmanager);
+    }
+
     /**
      * Reload view, text, colors and other defaults
      */
