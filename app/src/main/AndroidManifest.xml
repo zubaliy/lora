@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.athome.zubaliy.mylifeontheroad">
 
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
-
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
@@ -31,29 +28,6 @@
             </intent-filter>
 
 
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-                <data android:mimeType="*/*" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-
-            <intent-filter>
-                <action android:name="android.nfc.action.TECH_DISCOVERED" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.nfc.action.TECH_DISCOVERED"
-                android:resource="@xml/nfc_tech_filter" />
-
-            <receiver android:name="MyReceiver">
-                <intent-filter>
-                    <action android:name="android.intent.action.ACTION_ACL_CONNECTED"/>
-                </intent-filter>
-                <intent-filter>
-                    <action android:name="android.intent.action.ACTION_ACL_DISCONNECTED"/>
-                </intent-filter>
-            </receiver>
 
         </activity>
 
