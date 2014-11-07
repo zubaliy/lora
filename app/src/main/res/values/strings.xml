@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--    Main view-->
     <string name="app_name">My life on the road</string>
     <string name="hello_world">Hello World!</string>
     <string name="connected">Connected</string>
@@ -9,6 +10,17 @@
     <string name="choose_device">Choose device</string>
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
+    <string name="is_service">Is service running?</string>
+
+    <!--    Notification  		-->
+    <string name="notificationtitle">Bluetooth activity tracking service</string>
+    <string name="notificationtext">..is running</string>
+    <string name="notificationticker">Bluetooth activity tracking service is started</string>
+    <string name="customnotificationticker">bluetooth activity tracking</string>
+    <string name="lbltitle">"Title : "</string>
+    <string name="lbltext">"Text : "</string>
+    <string name="notification">Notification</string>
+
 
 
 </resources>
