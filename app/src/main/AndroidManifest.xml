@@ -24,8 +24,19 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.athome.zubaliy.service.ActivityTrackingService_" />
+        <service android:name="com.athome.zubaliy.service.ActivityTrackingService_"
+                 android:process=":ActivityTrackingService"/>
 
+
+        <receiver
+            android:name="com.athome.zubaliy.broadcast.BroadcastService">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
 
 
     </application>
