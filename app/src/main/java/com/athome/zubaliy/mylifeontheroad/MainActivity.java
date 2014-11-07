@@ -6,8 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +17,12 @@ import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
 import com.athome.zubaliy.bluetooth.Bluetooth;
-import com.athome.zubaliy.service.ActivityTrackingService;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.LongClick;
-import org.androidannotations.annotations.Receiver;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,15 +44,12 @@ public class MainActivity extends Activity {
     @ViewById(R.id.txt_console)
     public TextView zConsole;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         Log.i(TAG, "Activity started");
 
-
-        Utils.init(this);
+        Config.init(this);
 
 
         ActivityLogManager.init(this);
@@ -66,13 +61,20 @@ public class MainActivity extends Activity {
         startActivity(dbmanager);
     }
 
+    @Click(R.id.btnIsService)
+    public void isServiceRunning() {
+
+        zConsole.append("Service is running: " + Config.isMyServiceRunning(this));
+        zConsole.append("\n");
+    }
+
     /**
      * Reload view, text, colors and other defaults
      */
     public void initView() {
-        Config.bluetoothMAC = Utils.readPreferences(AppKey.DEVICE_MAC_ADDRESS.getKey());
-        String deviceName = Bluetooth.getInstance().getBondenDevices().get(Config.bluetoothMAC);
+        String deviceName = Bluetooth.getInstance().getBondenDevices().get(Config.getBluetoothMac());
         zDevice.setText(deviceName);
+        zConsole.setMovementMethod(new ScrollingMovementMethod());
     }
 
     @LongClick(R.id.txt_bluetooth_device)
@@ -88,7 +90,7 @@ public class MainActivity extends Activity {
                 // Do something with the selection
                 Utils.savePreferences(AppKey.DEVICE_MAC_ADDRESS.getKey(), macs[item]);
                 zDevice.setText(names[item]);
-                Config.bluetoothMAC = macs[item];
+                Config.setBluetoothMac(macs[item]);
             }
         });
         AlertDialog alert = builder.create();
@@ -97,7 +99,7 @@ public class MainActivity extends Activity {
     }
 
 
-    @Receiver(actions = "android.bluetooth.device.action.ACL_CONNECTED")
+    //@Receiver(actions = "android.bluetooth.device.action.ACL_CONNECTED")
     protected void bluetoothConnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
@@ -106,7 +108,7 @@ public class MainActivity extends Activity {
         zConsole.append("connected to " + device.getName());
         zConsole.append("\n");
 
-        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
+        if (StringUtils.equals(Config.getBluetoothMac(), device.getAddress())) {
             connected();
         }
 
@@ -128,7 +130,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    @Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
+    //@Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
     protected void bluetoothDisconnected(Intent intent) {
         BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
@@ -137,7 +139,7 @@ public class MainActivity extends Activity {
         zConsole.append("disconnected from " + device.getName());
         zConsole.append("\n");
 
-        if (StringUtils.equals(Config.bluetoothMAC, device.getAddress())) {
+        if (StringUtils.equals(Config.getBluetoothMac(), device.getAddress())) {
             disconnected();
         }
 
@@ -176,6 +178,7 @@ public class MainActivity extends Activity {
     @Click(R.id.btnStartService)
     public void startService() {
         startService(new Intent(this, ActivityTrackingService_.class));
+//        ActivityTrackingService_.intent(this).start();
     }
 
     /**
@@ -184,6 +187,7 @@ public class MainActivity extends Activity {
     @Click(R.id.btnStopService)
     public void stopService() {
         stopService(new Intent(this, ActivityTrackingService_.class));
+//        ActivityTrackingService_.intent(this).stop();
     }
 
 
