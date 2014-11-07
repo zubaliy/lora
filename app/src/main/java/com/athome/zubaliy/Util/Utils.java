@@ -1,6 +1,7 @@
 package com.athome.zubaliy.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -13,36 +14,26 @@ import android.preference.PreferenceManager;
  */
 public class Utils {
 
-    private static Activity zActivity;
     private static SharedPreferences sp;
 
     /**
      * Init utils to make reading and writing of shared preferences possible.
      *
-     * @param activity the
+     * @param context the
      */
-    public static void init(Activity activity) {
-        zActivity = activity;
-        sp = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+    public static void init(Context context) {
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static void savePreferences(Activity activity, String key, String value) {
+    public static void savePreferences(String key, String value) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);
         editor.commit();
     }
 
-    public static String readPreferences(Activity activity, String key, String defaultValue) {
+    public static String readPreferences(String key, String defaultValue) {
         return sp.getString(key, defaultValue);
 
-    }
-
-    public static void savePreferences(String key, String value) {
-        savePreferences(zActivity, key, value);
-    }
-
-    public static String readPreferences(String key, String defaultValue) {
-        return readPreferences(zActivity, key, defaultValue);
     }
 
     public static String readPreferences(String key) {
