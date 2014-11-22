@@ -11,6 +11,9 @@ buildscript {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url 'http://repo.spring.io/milestone'
+    }
 }
 
 apply plugin: 'com.android.application'
@@ -24,11 +27,12 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'org.apache.commons:commons-collections4:4.0'
-
+    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.3'
+    compile 'com.google.code.gson:gson:2.3'
     provided 'org.projectlombok:lombok:1.12.6'
     apt 'org.projectlombok:lombok:1.12.6'
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 apt {
@@ -59,9 +63,13 @@ android {
     //exlude duplicate file from apache commons
     packagingOptions {
         exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
         exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
     }
+
 }
+
 
 
 
