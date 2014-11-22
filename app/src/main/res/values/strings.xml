@@ -11,6 +11,9 @@
     <string name="start_service">Start Service</string>
     <string name="stop_service">Stop Service</string>
     <string name="is_service">Is service running?</string>
+    <string name="upload">Upload my activity</string>
+    <string name="local">Local</string>
+    <string name="server">Server</string>
 
     <!--    Notification  		-->
     <string name="notificationtitle">Bluetooth activity tracking service</string>

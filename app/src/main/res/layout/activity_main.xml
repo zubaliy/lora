@@ -57,5 +57,43 @@
         android:layout_below="@+id/btnStopService"
         android:onClick="stopService"/>
 
+    <Button
+        android:id="@+id/btnUpload"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/upload"
+        android:layout_below="@+id/btnIsService"
+        android:onClick="stopService"/>
+
+    <Switch
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/sw_local_server"
+        android:layout_below="@+id/btnUpload"
+        android:layout_centerHorizontal="true"
+        android:checked="false"
+        android:textOff=""
+        android:textOn=""
+        android:maxWidth="150dip"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/local"
+        android:id="@+id/txt_local"
+        android:layout_toStartOf="@+id/sw_local_server"
+        android:layout_alignBottom="@+id/sw_local_server"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/server"
+        android:id="@+id/txt_server"
+        android:layout_alignBottom="@+id/sw_local_server"
+        android:layout_alignParentEnd="true"/>
+
 
 </RelativeLayout>
