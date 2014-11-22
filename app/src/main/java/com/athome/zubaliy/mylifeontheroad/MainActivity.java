@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,14 +21,26 @@ import com.athome.zubaliy.util.Utils;
 import com.athome.zubaliy.bluetooth.Bluetooth;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.HttpsClient;
 import org.androidannotations.annotations.LongClick;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,12 +58,18 @@ public class MainActivity extends Activity {
     @ViewById(R.id.txt_console)
     public TextView zConsole;
 
+    @HttpsClient
+    public HttpClient httpsClient;
+
+    private Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Activity started");
 
         Config.init(this);
+        gson = new GsonBuilder().setDateFormat(Config.sdf.toPattern()).create();
 
 
         ActivityLogManager.init(this);
@@ -68,6 +88,54 @@ public class MainActivity extends Activity {
         zConsole.append("\n");
     }
 
+    @Click(R.id.btnUpload)
+    public void uploadActivity() {
+        uploadActivityLogs();
+    }
+
+    @Background
+    public void uploadActivityLogs() {
+//        List<ActivityLog> logs = ActivityLogManager.getInstance().getAllLogs();
+//        StringBuilder builder = new StringBuilder();
+//        builder.append("[");
+//        for (ActivityLog log : logs) {
+//            builder.append(log.toString());
+//            builder.append(",");
+//        }
+//        builder.setLength(builder.length() - 1);
+//        builder.append("]");
+
+
+        try {
+
+            String json = gson.toJson(ActivityLogManager.getInstance().getAllLogs()).toString();
+            Log.i(TAG, json);
+
+            HttpPost httpPost = new HttpPost(Config.LINK_UPLOAD_ACTIVITYLOGS);
+            httpPost.setEntity(new StringEntity(json));
+            httpPost.setHeader("Accept", "application/json");
+            httpPost.setHeader("Content-type", "application/json");
+
+            HttpResponse response = httpsClient.execute(httpPost);
+            handleResponse(response);
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    @UiThread
+    public void handleResponse(HttpResponse resp) {
+        zConsole.setText("");
+        zConsole.append(resp.getStatusLine().toString());
+        zConsole.append("\n");
+        for (Header header : resp.getAllHeaders()) {
+            zConsole.append(header.toString());
+            zConsole.append("\n");
+        }
+
+
+    }
+
     /**
      * Reload view, text, colors and other defaults
      */
@@ -75,6 +143,18 @@ public class MainActivity extends Activity {
         String deviceName = Bluetooth.getInstance().getBondenDevices().get(Config.getBluetoothMac());
         zDevice.setText(deviceName);
         zConsole.setMovementMethod(new ScrollingMovementMethod());
+    }
+
+    @CheckedChange(R.id.sw_local_server)
+    void checkedSwitch(CompoundButton hello, boolean isChecked) {
+        Log.i(TAG, "server: " + isChecked);
+        if (isChecked) {
+            Config.LINK_UPLOAD_ACTIVITYLOGS = Config.LINK_UPLOAD_ACTIVITYLOGS_SERVER;
+            appendToConsole(Config.LINK_UPLOAD_ACTIVITYLOGS);
+        } else {
+            Config.readPropertiesFile(this);
+            appendToConsole(Config.LINK_UPLOAD_ACTIVITYLOGS);
+        }
     }
 
     @LongClick(R.id.txt_bluetooth_device)
@@ -198,6 +278,11 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
         initView();
+    }
+
+    private void appendToConsole(String text){
+        zConsole.append(text);
+        zConsole.append("\n");
     }
 
 }
