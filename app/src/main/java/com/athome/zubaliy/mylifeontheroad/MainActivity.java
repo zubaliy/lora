@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +39,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -95,17 +93,6 @@ public class MainActivity extends Activity {
 
     @Background
     public void uploadActivityLogs() {
-//        List<ActivityLog> logs = ActivityLogManager.getInstance().getAllLogs();
-//        StringBuilder builder = new StringBuilder();
-//        builder.append("[");
-//        for (ActivityLog log : logs) {
-//            builder.append(log.toString());
-//            builder.append(",");
-//        }
-//        builder.setLength(builder.length() - 1);
-//        builder.append("]");
-
-
         try {
 
             String json = gson.toJson(ActivityLogManager.getInstance().getAllLogs()).toString();
@@ -140,7 +127,7 @@ public class MainActivity extends Activity {
      * Reload view, text, colors and other defaults
      */
     public void initView() {
-        String deviceName = Bluetooth.getInstance().getBondenDevices().get(Config.getBluetoothMac());
+        String deviceName = Bluetooth.getInstance().getBondedDevices().get(Config.getBluetoothMac());
         zDevice.setText(deviceName);
         zConsole.setMovementMethod(new ScrollingMovementMethod());
     }
@@ -159,7 +146,7 @@ public class MainActivity extends Activity {
 
     @LongClick(R.id.txt_bluetooth_device)
     public void selectDevice() {
-        Map<String, String> devices = Bluetooth.getInstance().getBondenDevices();
+        Map<String, String> devices = Bluetooth.getInstance().getBondedDevices();
         final String[] macs = devices.keySet().toArray(new String[devices.size()]);
         final String[] names = devices.values().toArray(new String[devices.size()]);
 

@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Bluetooth contoller
+ *
  * Created by zubaliy on 28/10/14.
  */
 public class Bluetooth {
@@ -52,19 +54,19 @@ public class Bluetooth {
     }
 
 
-    public Map<String, String> getBondenDevices() {
+    public Map<String, String> getBondedDevices() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        Map<String, String> bondenDevices = new HashMap<String, String>();
+        Map<String, String> bondedDevices = new HashMap<String, String>();
         // If there are paired devices
         if (CollectionUtils.isNotEmpty(pairedDevices)) {
             Log.d(TAG, "Paired devices:");
             for (BluetoothDevice device : pairedDevices) {
                 Log.d(TAG, device.getName() + " - " + device.getAddress());
-                bondenDevices.put(device.getAddress(), device.getName());
+                bondedDevices.put(device.getAddress(), device.getName());
             }
         }
 
 
-        return bondenDevices;
+        return bondedDevices;
     }
 }
