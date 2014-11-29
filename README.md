@@ -1,3 +1,1 @@
-NfcToolz
-========
-Android NFC technology basics.
+LifeOnRoad Android client
