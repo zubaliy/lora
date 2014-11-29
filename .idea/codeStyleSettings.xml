@@ -32,9 +32,6 @@
         </option>
         <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="true" />
         <option name="FORMATTER_TAGS_ENABLED" value="true" />
-        <AndroidXmlCodeStyleSettings>
-          <option name="USE_CUSTOM_SETTINGS" value="true" />
-        </AndroidXmlCodeStyleSettings>
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
