@@ -25,8 +25,8 @@ public class Config {
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
 
-    public static final String LINK_UPLOAD_ACTIVITYLOGS_SERVER = "https://open-aroadz.rhcloud" + "" +
-            ".com/api/insert/ActivityLogs";
+    public static final String LINK_UPLOAD_ACTIVITYLOGS_SERVER = "https://lor-aroadz.rhcloud" + "" +
+            ".com/lifeonroad/api/insert/ActivityLogs";
     public static final String LINK_UPLOAD_ACTIVITYLOGS_LOCAL = "http://192.168.1" + "" +
             ".4:8080/open/lifeonroad/api/insert/ActivityLogs";
     public static String LINK_UPLOAD_ACTIVITYLOGS = "default";
@@ -52,7 +52,7 @@ public class Config {
             try {
                 FileInputStream input = new FileInputStream(propertiesPath);
                 properties.load(input);
-                LINK_UPLOAD_ACTIVITYLOGS = properties.getProperty(AppKey.CONFIG_FILENAME.getKey());
+                LINK_UPLOAD_ACTIVITYLOGS = properties.getProperty(AppKey.CONFIG_LINK_SERVER_LOCAL.getKey());
 
             } catch (IOException e) {
 
@@ -103,7 +103,8 @@ public class Config {
             try {
 
                 FileOutputStream out = new FileOutputStream(propertiesPath);
-                prop.setProperty(AppKey.CONFIG_FILENAME.getKey(), LINK_UPLOAD_ACTIVITYLOGS_LOCAL);
+                prop.setProperty(AppKey.CONFIG_LINK_SERVER_LOCAL.getKey(), LINK_UPLOAD_ACTIVITYLOGS_LOCAL);
+                prop.setProperty(AppKey.CONFIG_LINK_SERVER_WEB.getKey(), LINK_UPLOAD_ACTIVITYLOGS_SERVER);
                 prop.store(out, null);
                 out.close();
             } catch (IOException e) {
