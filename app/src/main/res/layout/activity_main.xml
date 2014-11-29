@@ -34,35 +34,11 @@
         android:layout_alignParentBottom="true"/>
 
     <Button
-        android:id="@+id/btnStartService"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_service"
-        android:layout_below="@+id/txt_bluetooth_device"
-        android:onClick="startService"/>
-
-    <Button
-        android:id="@+id/btnStopService"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/stop_service"
-        android:layout_below="@+id/btnStartService"
-        android:onClick="stopService"/>
-
-    <Button
-        android:id="@+id/btnIsService"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/is_service"
-        android:layout_below="@+id/btnStopService"
-        android:onClick="stopService"/>
-
-    <Button
         android:id="@+id/btnUpload"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/upload"
-        android:layout_below="@+id/btnIsService"
+        android:layout_below="@+id/txt_bluetooth_device"
         android:onClick="stopService"/>
 
     <Switch
