@@ -1,5 +1,4 @@
 LifeOnRoad Android client
 
-Scrum Board
-
+Scrum Board <br>
 http://zubaliy.myjetbrains.com/youtrack/dashboard
