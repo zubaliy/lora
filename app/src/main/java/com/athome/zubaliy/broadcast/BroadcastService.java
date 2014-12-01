@@ -49,8 +49,12 @@ public class BroadcastService extends BroadcastReceiver {
     }
 
     /**
-     * @param intentAction
-     * @param device
+     * Handel intent action.
+     * Check if the right device is (dis)connected.
+     * Do the writes to db.
+     *
+     * @param intentAction the intention action
+     * @param mac the bluetooth mac address
      */
     @Background
     private void doTheWork(String intentAction, String mac) {
