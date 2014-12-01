@@ -12,7 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.athome.zubaliy.service.ActivityTrackingService_;
 import com.athome.zubaliy.util.AndroidDatabaseManager;
 import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
@@ -79,12 +78,6 @@ public class MainActivity extends Activity {
         startActivity(dbmanager);
     }
 
-    @Click(R.id.btnIsService)
-    public void isServiceRunning() {
-
-        zConsole.append("Service is running: " + Config.isMyServiceRunning(this));
-        zConsole.append("\n");
-    }
 
     @Click(R.id.btnUpload)
     public void uploadActivity() {
@@ -164,99 +157,6 @@ public class MainActivity extends Activity {
         alert.show();
 
     }
-
-
-    //@Receiver(actions = "android.bluetooth.device.action.ACL_CONNECTED")
-    protected void bluetoothConnected(Intent intent) {
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-        logInfoAboutBluetoothDevice(intent, device);
-
-        zConsole.append("connected to " + device.getName());
-        zConsole.append("\n");
-
-        if (StringUtils.equals(Config.getBluetoothMac(), device.getAddress())) {
-            connected();
-        }
-
-    }
-
-    private void logInfoAboutBluetoothDevice(Intent intent, BluetoothDevice device) {
-        if (Config.DEBUG) {
-            Log.d(TAG, "intent.action = " + intent.getAction());
-
-            Log.d(TAG, "device.name = " + device.getName());
-            Log.d(TAG, "device.address = " + device.getAddress());
-            Log.d(TAG, "device.bluetooth_class = " + device.getBluetoothClass());
-            Log.d(TAG, "device.type = " + device.getType());
-            if (device.getUuids() != null) {
-                for (int i = 0; i < device.getUuids().length; i++) {
-                    Log.d(TAG, "device.uuid " + i + " = " + device.getUuids()[i]);
-                }
-            }
-        }
-    }
-
-    //@Receiver(actions = "android.bluetooth.device.action.ACL_DISCONNECTED")
-    protected void bluetoothDisconnected(Intent intent) {
-        BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-        logInfoAboutBluetoothDevice(intent, device);
-
-        zConsole.append("disconnected from " + device.getName());
-        zConsole.append("\n");
-
-        if (StringUtils.equals(Config.getBluetoothMac(), device.getAddress())) {
-            disconnected();
-        }
-
-    }
-
-    public void connected() {
-        Log.i(TAG, "connected");
-
-        Toast.makeText(this, "connected", Toast.LENGTH_LONG).show();
-        GregorianCalendar calendar = new GregorianCalendar();
-
-        ActivityLog log = new ActivityLog(calendar.getTime());
-        ActivityLogManager.getInstance().addLog(log);
-
-        Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
-    }
-
-    public void disconnected() {
-        Log.i(TAG, "disconnected");
-        Toast.makeText(this, "disconnected", Toast.LENGTH_LONG).show();
-
-        GregorianCalendar calendar = new GregorianCalendar();
-
-        ActivityLog log = ActivityLogManager.getInstance().getLastLog();
-        log.setDisconnected(calendar.getTime());
-        log.setDifference((int) (log.getDisconnected().getTime() - log.getConnected().getTime()));
-        ActivityLogManager.getInstance().updateLog(log);
-
-        Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
-    }
-
-
-    /**
-     * Method to start the service
-     */
-    @Click(R.id.btnStartService)
-    public void startService() {
-        startService(new Intent(this, ActivityTrackingService_.class));
-//        ActivityTrackingService_.intent(this).start();
-    }
-
-    /**
-     * Method to stop the service
-     */
-    @Click(R.id.btnStopService)
-    public void stopService() {
-        stopService(new Intent(this, ActivityTrackingService_.class));
-//        ActivityTrackingService_.intent(this).stop();
-    }
-
 
     public void onPause() {
         super.onPause();

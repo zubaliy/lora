@@ -69,25 +69,6 @@ public class Config {
         Utils.savePreferences(AppKey.DEVICE_MAC_ADDRESS.getKey(), mac);
     }
 
-    public static boolean isMyServiceRunning(Context context) {
-        boolean result = false;
-        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (ActivityTrackingService_.class.getCanonicalName().toString().equals(service.service.getClassName())) {
-
-                result = true;
-                break;
-            }
-        }
-
-        if (result) {
-            Log.d(TAG, "Service is running");
-        } else {
-            Log.d(TAG, "Service is not running");
-        }
-        return result;
-    }
-
     /**
      * Will create a property file if not exists
      *

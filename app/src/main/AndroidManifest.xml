@@ -27,9 +27,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.athome.zubaliy.service.ActivityTrackingService_"
-                 android:process=":ActivityTrackingService"/>
-
 
         <receiver
             android:name="com.athome.zubaliy.broadcast.BroadcastService">
