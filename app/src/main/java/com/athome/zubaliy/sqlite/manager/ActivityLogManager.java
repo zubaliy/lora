@@ -91,4 +91,12 @@ public class ActivityLogManager {
         return logs.get(0);
     }
 
+    public void deleteLastRow(){
+        try {
+            helper.getActivityLogDao().delete(getLastLog());
+        } catch (SQLException e) {
+            Log.d(TAG, e.toString());
+        }
+    }
+
 }

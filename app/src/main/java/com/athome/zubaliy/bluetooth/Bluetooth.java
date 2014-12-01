@@ -13,13 +13,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Bluetooth contoller
- *
+ * Bluetooth controller
+ * <p/>
  * Created by zubaliy on 28/10/14.
  */
 public class Bluetooth {
     private static final String TAG = "zBluetooth";
-
 
     // singleton instance
     private static final Bluetooth instance = new Bluetooth();
@@ -27,7 +26,6 @@ public class Bluetooth {
     private BluetoothAdapter bluetoothAdapter;
 
     public static Bluetooth getInstance() {
-
         return instance;
     }
 
@@ -54,9 +52,14 @@ public class Bluetooth {
     }
 
 
+    /**
+     * Get a list of bonded bluetooth devices
+     *
+     * @return map of MAC's and Names
+     */
     public Map<String, String> getBondedDevices() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        Map<String, String> bondedDevices = new HashMap<String, String>();
+        Map<String, String> bondedDevices = new HashMap<>();
         // If there are paired devices
         if (CollectionUtils.isNotEmpty(pairedDevices)) {
             Log.d(TAG, "Paired devices:");
@@ -65,7 +68,6 @@ public class Bluetooth {
                 bondedDevices.put(device.getAddress(), device.getName());
             }
         }
-
 
         return bondedDevices;
     }

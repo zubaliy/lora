@@ -2,7 +2,6 @@ package com.athome.zubaliy.mylifeontheroad;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.athome.zubaliy.util.AndroidDatabaseManager;
 import com.athome.zubaliy.util.AppKey;
@@ -18,7 +16,6 @@ import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
 import com.athome.zubaliy.bluetooth.Bluetooth;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
-import com.athome.zubaliy.sqlite.model.ActivityLog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -30,14 +27,12 @@ import org.androidannotations.annotations.HttpsClient;
 import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
-import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
@@ -167,7 +162,7 @@ public class MainActivity extends Activity {
         initView();
     }
 
-    private void appendToConsole(String text){
+    private void appendToConsole(String text) {
         zConsole.append(text);
         zConsole.append("\n");
     }
