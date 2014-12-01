@@ -15,6 +15,7 @@ import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EReceiver;
 import org.androidannotations.annotations.Receiver;
 import org.apache.commons.lang3.StringUtils;
@@ -44,11 +45,16 @@ public class BroadcastService extends BroadcastReceiver {
         Log.d(TAG, "device mac: " + device.getAddress());
 
         // Do the work
-        doTheWork(intent.getAction(), device);
+        doTheWork(intent.getAction(), device.getAddress());
     }
 
-    private void doTheWork(String intentAction, BluetoothDevice device) {
-        if (StringUtils.equals(Config.getBluetoothMac(), device.getAddress())) {
+    /**
+     * @param intentAction
+     * @param device
+     */
+    @Background
+    private void doTheWork(String intentAction, String mac) {
+        if (StringUtils.equals(Config.getBluetoothMac(), mac)) {
             if (StringUtils.equals("android.bluetooth.device.action.ACL_CONNECTED", intentAction)) {
                 if (!shortStop()) {
                     Log.i(TAG, "Short stop. Skip creating new row in db.");
