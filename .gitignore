@@ -2,7 +2,14 @@
 /local.properties
 .DS_Store
 /build
-.idea/
 out/
-.idea_modules/
+
+# Intellij project files
 *.iml
+*.ipr
+*.iws
+.idea/
+.idea_modules/
+
+# Local IDEA workspace
+.idea/workspace.xml
