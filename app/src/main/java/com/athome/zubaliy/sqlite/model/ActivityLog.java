@@ -1,7 +1,5 @@
 package com.athome.zubaliy.sqlite.model;
 
-import com.athome.zubaliy.util.Config;
-import com.google.gson.annotations.Expose;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 

@@ -4,26 +4,11 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Debug;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.athome.zubaliy.mylifeontheroad.BuildConfig;
 import com.athome.zubaliy.mylifeontheroad.Engine;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
-import com.athome.zubaliy.sqlite.model.ActivityLog;
-import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
-import com.athome.zubaliy.util.Utils;
-
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.EReceiver;
-import org.androidannotations.annotations.Receiver;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.GregorianCalendar;
 
 /**
  * Created by zubaliy on 06/11/14.

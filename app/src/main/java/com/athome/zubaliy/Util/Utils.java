@@ -1,6 +1,5 @@
 package com.athome.zubaliy.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;

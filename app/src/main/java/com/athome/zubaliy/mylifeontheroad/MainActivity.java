@@ -10,12 +10,12 @@ import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.athome.zubaliy.bluetooth.Bluetooth;
+import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.util.AndroidDatabaseManager;
 import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
-import com.athome.zubaliy.bluetooth.Bluetooth;
-import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
