@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
     public void uploadActivityLogs() {
         try {
 
-            String json = gson.toJson(ActivityLogManager.getInstance().getAllLogs()).toString();
+            String json = gson.toJson(ActivityLogManager.getInstance().getAllLogs());
             Log.i(TAG, json);
 
             HttpPost httpPost = new HttpPost(Config.LINK_UPLOAD_ACTIVITYLOGS);
