@@ -18,8 +18,7 @@ import java.util.Properties;
  * Created by zubaliy on 28/10/14.
  */
 public class Config {
-    private static final String TAG = "zConfig";
-    public static final boolean DEBUG = true;
+    private static final String TAG = Config.class.getSimpleName();
 
     // default MongoDB and JavaScript ISO date format
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

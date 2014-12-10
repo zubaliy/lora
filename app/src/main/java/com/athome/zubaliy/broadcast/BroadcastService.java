@@ -17,11 +17,9 @@ import com.athome.zubaliy.util.Config;
  */
 
 public class BroadcastService extends BroadcastReceiver {
-    private static final String TAG = "zBroadcastService";
+    private static final String TAG = BroadcastService.class.getSimpleName();
 
-
-    static Engine engine = new Engine();
-
+    private static Engine engine = new Engine();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -37,8 +35,5 @@ public class BroadcastService extends BroadcastReceiver {
         // Do the work
         engine.doTheWork(intent.getAction(), device.getAddress());
     }
-
-
-
 
 }

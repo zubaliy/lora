@@ -41,8 +41,8 @@ import java.util.Map;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
-    private static final String TAG = "zMainActivity";
 
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @ViewById(R.id.txt_bluetooth_device)
     public TextView zDevice;

@@ -17,7 +17,7 @@ import java.util.GregorianCalendar;
  */
 @EBean
 public class Engine {
-    private static final String TAG = "zEngine";
+    private static final String TAG = Engine.class.getSimpleName();
 
     /**
      * Handel intent action.

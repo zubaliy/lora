@@ -17,7 +17,7 @@ import lombok.Getter;
  */
 public class ActivityLogManager {
 
-    private static final String TAG = "ActivityLogRepository";
+    private static final String TAG = ActivityLogManager.class.getSimpleName();
 
     static private ActivityLogManager instance;
 
