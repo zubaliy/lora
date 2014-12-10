@@ -3,59 +3,35 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-    }
-}
-
-repositories {
-    mavenCentral()
-    mavenLocal()
-    maven {
-        url 'http://repo.spring.io/milestone'
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
-dependencies {
-    apt 'org.androidannotations:androidannotations:3.1'
-    compile 'org.androidannotations:androidannotations-api:3.1'
-    compile 'com.android.support:appcompat-v7:21.0.+'
-    compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'org.apache.commons:commons-collections4:4.0'
-    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
-    compile 'com.fasterxml.jackson.core:jackson-core:2.4.3'
-    compile 'com.google.code.gson:gson:2.3'
-    provided 'org.projectlombok:lombok:1.12.6'
-    apt 'org.projectlombok:lombok:1.12.6'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-}
-
-apt {
-    arguments {
-        androidManifestFile variant.processResources.manifestFile
-        resourcePackageName 'com.athome.zubaliy.mylifeontheroad'
-    }
-}
-
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.0'
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         applicationId 'com.athome.zubaliy.mylifeontheroad'
+
         minSdkVersion 18
         targetSdkVersion 21
         versionCode 1
         versionName '0.0.1'
     }
     buildTypes {
+        debug {
+            zipAlignEnabled false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
         release {
-            runProguard false
+            zipAlignEnabled true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -74,6 +50,37 @@ android {
     }
 }
 
+configurations {
+    apt
+}
 
+apt {
+    arguments {
+        resourcePackageName android.defaultConfig.applicationId
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+    }
+}
 
+def AndroidAnnotationsVersion = '3.2'
+def OrmLiteVersion = '4.48'
+def LombokVersion = '1.14.8'
 
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:21.0.2'
+
+    apt "org.androidannotations:androidannotations:$AndroidAnnotationsVersion"
+    compile "org.androidannotations:androidannotations-api:$AndroidAnnotationsVersion"
+
+    compile "com.j256.ormlite:ormlite-android:$OrmLiteVersion"
+    compile "com.j256.ormlite:ormlite-core:$OrmLiteVersion"
+
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'org.apache.commons:commons-collections4:4.0'
+    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.3'
+    compile 'com.google.code.gson:gson:2.3'
+
+    apt "org.projectlombok:lombok:$LombokVersion"
+    compile "org.projectlombok:lombok:$LombokVersion"
+}
