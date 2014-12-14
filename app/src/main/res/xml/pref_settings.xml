@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+    <ListPreference
+        android:key="short_journey"
+        android:title="@string/pref_title_short_journey"
+        android:entries="@array/pref_short_journey_titles"
+        android:entryValues="@array/pref_short_journey_values"
+        android:defaultValue="120000"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+
+    <ListPreference
+        android:key="short_break"
+        android:title="@string/pref_title_short_break"
+        android:entries="@array/pref_short_break_titles"
+        android:entryValues="@array/pref_short_break_titles"
+        android:defaultValue="180000"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+</PreferenceScreen>

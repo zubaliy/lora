@@ -61,6 +61,17 @@ public class SettingsActivity extends PreferenceActivity {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
+        // TODO: how to add header? nullpointer..
+        // Add 'general settings' preferences.
+        addPreferencesFromResource(R.xml.pref_settings);
+
+        bindPreferenceSummaryToValue(findPreference("short_journey"));
+        bindPreferenceSummaryToValue(findPreference("short_break"));
+
+        // TODO: add choose device. Should be dynamically generated
+
+
+
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_general);
 
@@ -83,6 +94,8 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference("example_list"));
         bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
         bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+
+
     }
 
     /**
