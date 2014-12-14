@@ -56,20 +56,14 @@ public class Bluetooth {
      * @return map of MAC's and Names
      */
     public Map<String, String> getBondedDevices() {
-
         Map<String, String> bondedDevices = new HashMap<>();
-
-        //bluetoothAdapter is null on devices that don't support bluetooth
-        if (bluetoothAdapter != null)
-        {
-            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-            // If there are paired devices
-            if (CollectionUtils.isNotEmpty(pairedDevices)) {
-                Log.d(TAG, "Paired devices:");
-                for (BluetoothDevice device : pairedDevices) {
-                    Log.d(TAG, device.getName() + " - " + device.getAddress());
-                    bondedDevices.put(device.getAddress(), device.getName());
-                }
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        // If there are paired devices
+        if (CollectionUtils.isNotEmpty(pairedDevices)) {
+            Log.d(TAG, "Paired devices:");
+            for (BluetoothDevice device : pairedDevices) {
+                Log.d(TAG, device.getName() + " - " + device.getAddress());
+                bondedDevices.put(device.getAddress(), device.getName());
             }
         }
 
