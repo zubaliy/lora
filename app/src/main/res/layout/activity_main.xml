@@ -26,19 +26,20 @@
         android:layout_centerHorizontal="true"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:id="@+id/txt_console"
-        android:scrollbars="vertical"
-        android:gravity="bottom"
-        android:layout_alignParentBottom="true"/>
+        android:text="@string/title_activity_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_settings"
+        android:textSize="40dip"
+        android:layout_below="@+id/txt_bluetooth_device"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/btnUpload"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/upload"
-        android:layout_below="@+id/txt_bluetooth_device"
+        android:layout_below="@+id/txt_settings"
         android:onClick="stopService"/>
 
     <Switch
@@ -70,6 +71,14 @@
         android:id="@+id/txt_server"
         android:layout_alignBottom="@+id/sw_local_server"
         android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/txt_console"
+        android:scrollbars="vertical"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true"/>
 
 
 </RelativeLayout>

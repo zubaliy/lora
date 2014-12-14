@@ -69,8 +69,7 @@ public class MainActivity extends Activity {
 
     @LongClick(R.id.tekst)
     public void showDbManager() {
-        Intent dbmanager = new Intent(this, AndroidDatabaseManager.class);
-        startActivity(dbmanager);
+        startActivity(new Intent(this, AndroidDatabaseManager.class));
     }
 
 
@@ -107,8 +106,6 @@ public class MainActivity extends Activity {
             zConsole.append(header.toString());
             zConsole.append("\n");
         }
-
-
     }
 
     /**
@@ -151,6 +148,11 @@ public class MainActivity extends Activity {
         AlertDialog alert = builder.create();
         alert.show();
 
+    }
+
+    @LongClick(R.id.txt_settings)
+    public void showSettings(){
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     public void onPause() {
