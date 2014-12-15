@@ -4,11 +4,14 @@ import android.util.Log;
 
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
+import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
+import com.athome.zubaliy.util.Utils;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.GregorianCalendar;
 
@@ -31,16 +34,17 @@ public class Engine {
     public void doTheWork(String intentAction, String mac) {
         if (StringUtils.equals(Config.getBluetoothMac(), mac)) {
             if (StringUtils.equals("android.bluetooth.device.action.ACL_CONNECTED", intentAction)) {
-                if (!shortStop()) {
-                    Log.i(TAG, String.format("Short stop detected, less than %s ms", String.valueOf(Config.SHORTSTOP)));
-                    Log.i(TAG, "Short stop => skip creating new row in db.");
+                if (!shortBreak()) {
+                    Log.d(TAG, String.format("Short stop detected, less than %s ms",
+                            Utils.readPreferences(AppKey.SHORT_BREAK.getKey())));
+                    Log.d(TAG, "Short stop => skip creating new row in db.");
                     connected();
                 }
             } else if (StringUtils.equals("android.bluetooth.device.action.ACL_DISCONNECTED", intentAction)) {
-                if (shortDrive()) {
-                    Log.i(TAG, String.format("Short drive detected, less than %s ms",
-                            String.valueOf(Config.SHORTDRIVE)));
-                    Log.i(TAG, "Short drive => delete last inserted row.");
+                if (shortJourney()) {
+                    Log.d(TAG, String.format("Short drive detected, less than %s ms",
+                            Utils.readPreferences(AppKey.SHORT_JOURNEY.getKey())));
+                    Log.d(TAG, "Short drive => delete last inserted row.");
                     ActivityLogManager.getInstance().deleteLastRow();
                 } else {
                     disconnected();
@@ -83,27 +87,37 @@ public class Engine {
      * Verifies if it was just a short stop.
      * Calculate time elapsed from last disconnection.
      */
-    public boolean shortStop() {
-        GregorianCalendar now = new GregorianCalendar();
-        ActivityLog log = ActivityLogManager.getInstance().getLastLog();
-        long difference = now.getTime().getTime() - log.getDisconnected().getTime();
+    public boolean shortBreak() {
+        boolean result = false;
+        if (NumberUtils.isNumber(Utils.readPreferences(AppKey.SHORT_BREAK.getKey()))) {
+            GregorianCalendar now = new GregorianCalendar();
+            ActivityLog log = ActivityLogManager.getInstance().getLastLog();
+            long difference = now.getTime().getTime() - log.getDisconnected().getTime();
 
-        Log.i(TAG, String.format("Short Stop for: %s", String.valueOf(difference)));
+            Log.d(TAG, String.format("Short Stop for: %s", String.valueOf(difference)));
 
-        return (difference < Config.SHORTSTOP);
+            result = (difference < NumberUtils.toInt(Utils.readPreferences(AppKey.SHORT_BREAK.getKey())));
+        }
+
+        return result;
     }
 
     /**
      * Verifies if it was just a short drive.
      * Calculate time elapsed from last connection
      */
-    public boolean shortDrive() {
-        GregorianCalendar now = new GregorianCalendar();
-        ActivityLog log = ActivityLogManager.getInstance().getLastLog();
-        long difference = now.getTime().getTime() - log.getConnected().getTime();
+    public boolean shortJourney() {
+        boolean result = false;
+        if (NumberUtils.isNumber(Utils.readPreferences(AppKey.SHORT_JOURNEY.getKey()))) {
+            GregorianCalendar now = new GregorianCalendar();
+            ActivityLog log = ActivityLogManager.getInstance().getLastLog();
+            long difference = now.getTime().getTime() - log.getConnected().getTime();
 
-        Log.i(TAG, String.format("Short Drive for: %s", String.valueOf(difference)));
+            Log.d(TAG, String.format("Short Drive for: %s", String.valueOf(difference)));
 
-        return (difference < Config.SHORTSTOP);
+            result = (difference < NumberUtils.toInt(Utils.readPreferences(AppKey.SHORT_JOURNEY.getKey())));
+        }
+
+        return result;
     }
 }

@@ -29,10 +29,6 @@ public class Config {
             ".4:8080/open/lifeonroad/api/insert/ActivityLogs";
     public static String LINK_UPLOAD_ACTIVITYLOGS = "default";
 
-    public static int SHORTSTOP = 2 * 60 * 1000;
-    public static int SHORTDRIVE = 30 * 1000;
-
-
     private static String FILE_CONFIG_PROPERTIES = "config.properties";
 
 
