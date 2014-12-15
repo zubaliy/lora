@@ -83,8 +83,8 @@ public class SettingsActivity extends PreferenceActivity {
 
         // Bind
         bindPreferenceSummaryToValue(findPreference(AppKey.DEVICE_MAC_ADDRESS.getKey()));
-        bindPreferenceSummaryToValue(findPreference("short_journey"));
-        bindPreferenceSummaryToValue(findPreference("short_break"));
+        bindPreferenceSummaryToValue(findPreference(AppKey.SHORT_JOURNEY.getKey()));
+        bindPreferenceSummaryToValue(findPreference(AppKey.SHORT_BREAK.getKey()));
 
 
     }
