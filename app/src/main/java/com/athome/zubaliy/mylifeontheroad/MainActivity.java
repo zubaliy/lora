@@ -100,11 +100,9 @@ public class MainActivity extends Activity {
     @UiThread
     public void handleResponse(HttpResponse resp) {
         zConsole.setText("");
-        zConsole.append(resp.getStatusLine().toString());
-        zConsole.append("\n");
+        appendToConsole(resp.getStatusLine().toString());
         for (Header header : resp.getAllHeaders()) {
-            zConsole.append(header.toString());
-            zConsole.append("\n");
+            appendToConsole(header.toString());
         }
     }
 
@@ -114,6 +112,10 @@ public class MainActivity extends Activity {
     public void initView() {
         String deviceName = Bluetooth.getInstance().getBondedDevices().get(Config.getBluetoothMac());
         zDevice.setText(deviceName);
+
+        appendToConsole(deviceName + " - " + Config.getBluetoothMac());
+        // Because zConsole and other UI components are only initialized after onCreate(),
+        // so could not be used directly in onCreate()
         zConsole.setMovementMethod(new ScrollingMovementMethod());
     }
 

@@ -60,7 +60,15 @@
     <string name="pref_title_vibrate">Vibrate</string>
 
     <!-- General settings -->
-    <string name="pref_header_general_settings">General settings</string>
+    <string name="pref_header_general_settings">General settings</string><string
+    name="pref_title_choose_device">My car</string>
+    <string-array name="pref_devices_titles">
+        <item>I don\'t know</item>
+    </string-array>
+    <string-array name="pref_devices_values">
+        <item>I don\'t know</item>
+    </string-array>
+
     <string name="pref_title_short_journey">Short journey</string>
     <string-array name="pref_short_journey_titles">
         <item>1 minute</item>

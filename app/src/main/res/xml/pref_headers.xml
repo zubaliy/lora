@@ -3,15 +3,15 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.athome.zubaliy.mylifeontheroad.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.athome.zubaliy.mylifeontheroad.SettingsActivity_$GeneralPreferenceFragment"
         android:title="@string/pref_header_general"/>
 
     <header
-        android:fragment="com.athome.zubaliy.mylifeontheroad.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.athome.zubaliy.mylifeontheroad.SettingsActivity_$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications"/>
 
     <header
-        android:fragment="com.athome.zubaliy.mylifeontheroad.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.athome.zubaliy.mylifeontheroad.SettingsActivity_$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync"/>
 
 </preference-headers>

@@ -18,7 +18,15 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 
 
+import com.athome.zubaliy.bluetooth.Bluetooth;
+import com.athome.zubaliy.util.AppKey;
+
+import org.androidannotations.annotations.EActivity;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -61,17 +69,34 @@ public class SettingsActivity extends PreferenceActivity {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
-        // TODO: how to add header? nullpointer..
+        // TODO: how to add first header? nullpointer..
         // Add 'general settings' preferences.
         addPreferencesFromResource(R.xml.pref_settings);
 
+
+        // TODO: add choose device. Should be dynamically generated
+        final ListPreference listPreference = (ListPreference) findPreference(AppKey.DEVICE_MAC_ADDRESS.getKey());
+        if (listPreference != null) {
+            Map<String, String> bondedDevices = Bluetooth.getInstance().getBondedDevices();
+            CharSequence entryTitles[] = new String[bondedDevices.size()];
+            CharSequence entryValues[] = new String[bondedDevices.size()];
+            int i = 0;
+
+            for (Map.Entry<String, String> entrySet : bondedDevices.entrySet()) {
+                entryTitles[i] = entrySet.getValue();
+                entryValues[i] = entrySet.getKey();
+                i++;
+            }
+            listPreference.setEntries(entryTitles);
+            listPreference.setEntryValues(entryValues);
+        }
+
+        bindPreferenceSummaryToValue(findPreference(AppKey.DEVICE_MAC_ADDRESS.getKey()));
         bindPreferenceSummaryToValue(findPreference("short_journey"));
         bindPreferenceSummaryToValue(findPreference("short_break"));
 
-        // TODO: add choose device. Should be dynamically generated
 
-
-
+        //#### SAMPLE CODE
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_general);
 
@@ -111,7 +136,8 @@ public class SettingsActivity extends PreferenceActivity {
      * example, 10" tablets are extra-large.
      */
     private static boolean isXLargeTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     /**
@@ -140,7 +166,8 @@ public class SettingsActivity extends PreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference
+            .OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
@@ -199,7 +226,9 @@ public class SettingsActivity extends PreferenceActivity {
 
         // Trigger the listener immediately with the preference's
         // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference, PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(), ""));
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                PreferenceManager.getDefaultSharedPreferences(preference.getContext()).getString(preference.getKey(),
+                        ""));
     }
 
     /**
@@ -259,4 +288,5 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("sync_frequency"));
         }
     }
+
 }
