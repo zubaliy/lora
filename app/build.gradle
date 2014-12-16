@@ -21,6 +21,13 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName '0.0.1'
+
+        buildConfigField "String", "KEY_DEVICE_MAC_ADDRESS", "\"device_mac_address\""
+        buildConfigField "String", "KEY_CONFIG_LINK_SERVER_LOCAL", "\"server_local\""
+        buildConfigField "String", "KEY_CONFIG_LINK_SERVER_WEB", "\"server_web\""
+        buildConfigField "String", "KEY_SHORT_JOURNEY", "\"short_journey\""
+        buildConfigField "String", "KEY_SHORT_BREAK", "\"short_break\""
+
     }
     buildTypes {
         debug {

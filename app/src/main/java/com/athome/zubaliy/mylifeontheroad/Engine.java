@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
-import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
 
@@ -36,14 +35,14 @@ public class Engine {
             if (StringUtils.equals("android.bluetooth.device.action.ACL_CONNECTED", intentAction)) {
                 if (!shortBreak()) {
                     Log.d(TAG, String.format("Short stop detected, less than %s ms",
-                            Utils.readPreferences(AppKey.SHORT_BREAK.getKey())));
+                            Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK)));
                     Log.d(TAG, "Short stop => skip creating new row in db.");
                     connected();
                 }
             } else if (StringUtils.equals("android.bluetooth.device.action.ACL_DISCONNECTED", intentAction)) {
                 if (shortJourney()) {
                     Log.d(TAG, String.format("Short drive detected, less than %s ms",
-                            Utils.readPreferences(AppKey.SHORT_JOURNEY.getKey())));
+                            Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
                     Log.d(TAG, "Short drive => delete last inserted row.");
                     ActivityLogManager.getInstance().deleteLastRow();
                 } else {
@@ -89,14 +88,14 @@ public class Engine {
      */
     public boolean shortBreak() {
         boolean result = false;
-        if (NumberUtils.isNumber(Utils.readPreferences(AppKey.SHORT_BREAK.getKey()))) {
+        if (NumberUtils.isNumber(Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK))) {
             GregorianCalendar now = new GregorianCalendar();
             ActivityLog log = ActivityLogManager.getInstance().getLastLog();
             long difference = now.getTime().getTime() - log.getDisconnected().getTime();
 
             Log.d(TAG, String.format("Short Stop for: %s", String.valueOf(difference)));
 
-            result = (difference < NumberUtils.toInt(Utils.readPreferences(AppKey.SHORT_BREAK.getKey())));
+            result = (difference < NumberUtils.toInt(Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK)));
         }
 
         return result;
@@ -108,14 +107,14 @@ public class Engine {
      */
     public boolean shortJourney() {
         boolean result = false;
-        if (NumberUtils.isNumber(Utils.readPreferences(AppKey.SHORT_JOURNEY.getKey()))) {
+        if (NumberUtils.isNumber(Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY))) {
             GregorianCalendar now = new GregorianCalendar();
             ActivityLog log = ActivityLogManager.getInstance().getLastLog();
             long difference = now.getTime().getTime() - log.getConnected().getTime();
 
             Log.d(TAG, String.format("Short Drive for: %s", String.valueOf(difference)));
 
-            result = (difference < NumberUtils.toInt(Utils.readPreferences(AppKey.SHORT_JOURNEY.getKey())));
+            result = (difference < NumberUtils.toInt(Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
         }
 
         return result;

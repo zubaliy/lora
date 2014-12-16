@@ -16,7 +16,6 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 
 import com.athome.zubaliy.bluetooth.Bluetooth;
-import com.athome.zubaliy.util.AppKey;
 
 import java.util.Map;
 
@@ -65,7 +64,7 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_settings);
 
         // Load BT devices
-        final ListPreference listPreference = (ListPreference) findPreference(AppKey.DEVICE_MAC_ADDRESS.getKey());
+        final ListPreference listPreference = (ListPreference) findPreference(BuildConfig.KEY_DEVICE_MAC_ADDRESS);
         if (listPreference != null) {
             Map<String, String> bondedDevices = Bluetooth.getInstance().getBondedDevices();
             CharSequence entryTitles[] = new String[bondedDevices.size()];
@@ -82,9 +81,9 @@ public class SettingsActivity extends PreferenceActivity {
         }
 
         // Bind
-        bindPreferenceSummaryToValue(findPreference(AppKey.DEVICE_MAC_ADDRESS.getKey()));
-        bindPreferenceSummaryToValue(findPreference(AppKey.SHORT_JOURNEY.getKey()));
-        bindPreferenceSummaryToValue(findPreference(AppKey.SHORT_BREAK.getKey()));
+        bindPreferenceSummaryToValue(findPreference(BuildConfig.KEY_DEVICE_MAC_ADDRESS));
+        bindPreferenceSummaryToValue(findPreference(BuildConfig.KEY_SHORT_JOURNEY));
+        bindPreferenceSummaryToValue(findPreference(BuildConfig.KEY_SHORT_BREAK));
 
 
     }

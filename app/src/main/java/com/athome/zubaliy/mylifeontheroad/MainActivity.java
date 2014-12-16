@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.athome.zubaliy.bluetooth.Bluetooth;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.util.AndroidDatabaseManager;
-import com.athome.zubaliy.util.AppKey;
 import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
 import com.google.gson.Gson;
@@ -142,7 +141,7 @@ public class MainActivity extends Activity {
         builder.setItems(names, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 // Do something with the selection
-                Utils.savePreferences(AppKey.DEVICE_MAC_ADDRESS.getKey(), macs[item]);
+                Utils.savePreferences(BuildConfig.KEY_DEVICE_MAC_ADDRESS, macs[item]);
                 zDevice.setText(names[item]);
                 Config.setBluetoothMac(macs[item]);
             }

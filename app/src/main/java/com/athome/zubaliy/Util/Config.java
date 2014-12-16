@@ -3,6 +3,8 @@ package com.athome.zubaliy.util;
 import android.content.Context;
 import android.util.Log;
 
+import com.athome.zubaliy.mylifeontheroad.BuildConfig;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -59,7 +61,7 @@ public class Config {
 
             try {
                 FileInputStream input = new FileInputStream(propertiesPath); properties.load(input);
-                LINK_UPLOAD_ACTIVITYLOGS = properties.getProperty(AppKey.CONFIG_LINK_SERVER_LOCAL.getKey());
+                LINK_UPLOAD_ACTIVITYLOGS = properties.getProperty(BuildConfig.KEY_CONFIG_LINK_SERVER_LOCAL);
 
             } catch (IOException e) {
 
@@ -74,7 +76,7 @@ public class Config {
      * @return MAC
      */
     public static String getBluetoothMac() {
-        return Utils.readPreferences(AppKey.DEVICE_MAC_ADDRESS.getKey());
+        return Utils.readPreferences(BuildConfig.KEY_DEVICE_MAC_ADDRESS);
     }
 
     /**
@@ -83,7 +85,7 @@ public class Config {
      * @param mac MAC as string
      */
     public static void setBluetoothMac(String mac) {
-        Utils.savePreferences(AppKey.DEVICE_MAC_ADDRESS.getKey(), mac);
+        Utils.savePreferences(BuildConfig.KEY_DEVICE_MAC_ADDRESS, mac);
     }
 
     /**
@@ -100,8 +102,8 @@ public class Config {
             Properties prop = new Properties(); try {
 
                 FileOutputStream out = new FileOutputStream(propertiesPath);
-                prop.setProperty(AppKey.CONFIG_LINK_SERVER_LOCAL.getKey(), LINK_UPLOAD_ACTIVITYLOGS_LOCAL);
-                prop.setProperty(AppKey.CONFIG_LINK_SERVER_WEB.getKey(), LINK_UPLOAD_ACTIVITYLOGS_SERVER);
+                prop.setProperty(BuildConfig.KEY_CONFIG_LINK_SERVER_LOCAL, LINK_UPLOAD_ACTIVITYLOGS_LOCAL);
+                prop.setProperty(BuildConfig.KEY_CONFIG_LINK_SERVER_WEB, LINK_UPLOAD_ACTIVITYLOGS_SERVER);
                 prop.store(out, null); out.close();
             } catch (IOException e) {
                 Log.e(TAG, "Failed to open file " + FILE_CONFIG_PROPERTIES); Log.e(TAG, e.toString());
