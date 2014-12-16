@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
-import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
 
 import org.androidannotations.annotations.Background;
@@ -31,23 +30,21 @@ public class Engine {
      */
     @Background
     public void doTheWork(String intentAction, String mac) {
-        if (StringUtils.equals(Config.getBluetoothMac(), mac)) {
-            if (StringUtils.equals("android.bluetooth.device.action.ACL_CONNECTED", intentAction)) {
-                if (!shortBreak()) {
-                    Log.d(TAG, String.format("Short stop detected, less than %s ms",
-                            Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK)));
-                    Log.d(TAG, "Short stop => skip creating new row in db.");
-                    connected();
-                }
-            } else if (StringUtils.equals("android.bluetooth.device.action.ACL_DISCONNECTED", intentAction)) {
-                if (shortJourney()) {
-                    Log.d(TAG, String.format("Short drive detected, less than %s ms",
-                            Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
-                    Log.d(TAG, "Short drive => delete last inserted row.");
-                    ActivityLogManager.getInstance().deleteLastRow();
-                } else {
-                    disconnected();
-                }
+        if (StringUtils.equals("android.bluetooth.device.action.ACL_CONNECTED", intentAction)) {
+            if (!shortBreak()) {
+                Log.d(TAG, String.format("Short stop detected, less than %s ms",
+                        Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK)));
+                Log.d(TAG, "Short stop => skip creating new row in db.");
+                connected();
+            }
+        } else if (StringUtils.equals("android.bluetooth.device.action.ACL_DISCONNECTED", intentAction)) {
+            if (shortJourney()) {
+                Log.d(TAG, String.format("Short drive detected, less than %s ms",
+                        Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
+                Log.d(TAG, "Short drive => delete last inserted row.");
+                ActivityLogManager.getInstance().deleteLastRow();
+            } else {
+                disconnected();
             }
         }
     }

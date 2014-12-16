@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.athome.zubaliy.bluetooth.Bluetooth;
 import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.util.AndroidDatabaseManager;
-import com.athome.zubaliy.util.Config;
 import com.athome.zubaliy.util.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,7 +59,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "Activity started");
 
-        Config.init(this);
         url = BuildConfig.LINK_UPLOAD_ACTIVITYLOGS_LOCAL;
         gson = new GsonBuilder().setDateFormat(BuildConfig.SDF.toPattern()).create();
 
@@ -109,10 +107,11 @@ public class MainActivity extends Activity {
      * Reload view, text, colors and other defaults
      */
     public void initView() {
-        String deviceName = Bluetooth.getInstance().getBondedDevices().get(Config.getBluetoothMac());
+        String chosenDeviceMacAddress = Utils.readPreferences(BuildConfig.KEY_DEVICE_MAC_ADDRESS, "00:00:00:00:00:00");
+        String deviceName = Bluetooth.getInstance().getBondedDevices().get(chosenDeviceMacAddress);
         zDevice.setText(deviceName);
 
-        appendToConsole(deviceName + " - " + Config.getBluetoothMac());
+        appendToConsole(deviceName + " - " + chosenDeviceMacAddress);
         // Because zConsole and other UI components are only initialized after onCreate(),
         // so could not be used directly in onCreate()
         zConsole.setMovementMethod(new ScrollingMovementMethod());
@@ -137,7 +136,6 @@ public class MainActivity extends Activity {
                                              // Do something with the selection
                                              Utils.savePreferences(BuildConfig.KEY_DEVICE_MAC_ADDRESS, macs[item]);
                                              zDevice.setText(names[item]);
-                                             Config.setBluetoothMac(macs[item]);
                                          }
                                      })
                                      .show();
