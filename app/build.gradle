@@ -22,12 +22,19 @@ android {
         versionCode 1
         versionName '0.0.1'
 
+        /* Default MongoDB and JavaScript ISO date format */
+        buildConfigField "java.text.SimpleDateFormat", "SDF", "new java.text.SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\")"
+
+        /* Keys */
         buildConfigField "String", "KEY_DEVICE_MAC_ADDRESS", "\"device_mac_address\""
         buildConfigField "String", "KEY_CONFIG_LINK_SERVER_LOCAL", "\"server_local\""
         buildConfigField "String", "KEY_CONFIG_LINK_SERVER_WEB", "\"server_web\""
         buildConfigField "String", "KEY_SHORT_JOURNEY", "\"short_journey\""
         buildConfigField "String", "KEY_SHORT_BREAK", "\"short_break\""
 
+        /* Upload URLs */
+        buildConfigField "String", "LINK_UPLOAD_ACTIVITYLOGS_SERVER", "\"https://lor-aroadz.rhcloud.com/lifeonroad/api/insert/ActivityLogs\""
+        buildConfigField "String", "LINK_UPLOAD_ACTIVITYLOGS_LOCAL", "\"http://192.168.1.4:8080/open/lifeonroad/api/insert/ActivityLogs\""
     }
     buildTypes {
         debug {

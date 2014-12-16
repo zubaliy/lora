@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
     @HttpsClient
     public HttpClient httpsClient;
 
+    private String url;
     private Gson gson;
 
     @Override
@@ -60,8 +61,8 @@ public class MainActivity extends Activity {
         Log.i(TAG, "Activity started");
 
         Config.init(this);
-        gson = new GsonBuilder().setDateFormat(Config.sdf.toPattern()).create();
-
+        url = BuildConfig.LINK_UPLOAD_ACTIVITYLOGS_LOCAL;
+        gson = new GsonBuilder().setDateFormat(BuildConfig.SDF.toPattern()).create();
 
         ActivityLogManager.init(this);
     }
@@ -80,11 +81,10 @@ public class MainActivity extends Activity {
     @Background
     public void uploadActivityLogs() {
         try {
-
             String json = gson.toJson(ActivityLogManager.getInstance().getAllLogs());
             Log.i(TAG, json);
 
-            HttpPost httpPost = new HttpPost(Config.LINK_UPLOAD_ACTIVITYLOGS);
+            HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(new StringEntity(json));
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
@@ -120,14 +120,9 @@ public class MainActivity extends Activity {
 
     @CheckedChange(R.id.sw_local_server)
     void checkedSwitch(CompoundButton hello, boolean isChecked) {
-        Log.i(TAG, "server: " + isChecked);
-        if (isChecked) {
-            Config.LINK_UPLOAD_ACTIVITYLOGS = Config.LINK_UPLOAD_ACTIVITYLOGS_SERVER;
-            appendToConsole(Config.LINK_UPLOAD_ACTIVITYLOGS);
-        } else {
-            Config.readPropertiesFile(this);
-            appendToConsole(Config.LINK_UPLOAD_ACTIVITYLOGS);
-        }
+        url = isChecked ? BuildConfig.LINK_UPLOAD_ACTIVITYLOGS_SERVER : BuildConfig.LINK_UPLOAD_ACTIVITYLOGS_LOCAL;
+        Log.i(TAG, "Switching to URL (" + (isChecked ? "REMOTE" : "LOCAL") +"): " + url);
+        appendToConsole(url);
     }
 
     @LongClick(R.id.txt_bluetooth_device)
@@ -136,19 +131,16 @@ public class MainActivity extends Activity {
         final String[] macs = devices.keySet().toArray(new String[devices.size()]);
         final String[] names = devices.values().toArray(new String[devices.size()]);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select device");
-        builder.setItems(names, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                // Do something with the selection
-                Utils.savePreferences(BuildConfig.KEY_DEVICE_MAC_ADDRESS, macs[item]);
-                zDevice.setText(names[item]);
-                Config.setBluetoothMac(macs[item]);
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-
+        new AlertDialog.Builder(this).setTitle("Select device")
+                                     .setItems(names, new DialogInterface.OnClickListener() {
+                                         public void onClick(DialogInterface dialog, int item) {
+                                             // Do something with the selection
+                                             Utils.savePreferences(BuildConfig.KEY_DEVICE_MAC_ADDRESS, macs[item]);
+                                             zDevice.setText(names[item]);
+                                             Config.setBluetoothMac(macs[item]);
+                                         }
+                                     })
+                                     .show();
     }
 
     @LongClick(R.id.txt_settings)
