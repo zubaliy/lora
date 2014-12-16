@@ -16,7 +16,8 @@ import java.util.Set;
  * Created by zubaliy on 28/10/14.
  */
 public class Bluetooth {
-    private static final String TAG = "zBluetooth";
+
+    private static final String TAG = Bluetooth.class.getSimpleName();
 
     // singleton instance
     private static final Bluetooth instance = new Bluetooth();
