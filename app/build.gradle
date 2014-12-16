@@ -93,7 +93,6 @@ dependencies {
     compile "org.projectlombok:lombok:$LombokVersion"
 
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile 'org.apache.commons:commons-collections4:4.0'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
     compile 'com.fasterxml.jackson.core:jackson-core:2.4.3'
     compile 'com.google.code.gson:gson:2.3'

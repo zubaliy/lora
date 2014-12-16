@@ -4,8 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.util.Log;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -59,13 +57,15 @@ public class Bluetooth {
     public Map<String, String> getBondedDevices() {
         Map<String, String> bondedDevices = new HashMap<>();
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        // If there are paired devices
-        if (CollectionUtils.isNotEmpty(pairedDevices)) {
-            Log.d(TAG, "Paired devices:");
+
+        Log.d(TAG, "Paired devices:");
+        if (pairedDevices != null && !pairedDevices.isEmpty()) {
             for (BluetoothDevice device : pairedDevices) {
-                Log.d(TAG, device.getName() + " - " + device.getAddress());
+                Log.d(TAG, device.getAddress() + " - " + device.getName());
                 bondedDevices.put(device.getAddress(), device.getName());
             }
+        } else {
+            Log.d(TAG, "None.");
         }
 
         return bondedDevices;
