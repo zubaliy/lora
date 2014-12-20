@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
  * Utils for easy using of:
  * * SharedPreferences
  * <p/>
- * Created by zubaliy on 02/11/14.
+ * @author Andriy Zubaliy
  */
 public class Utils {
 

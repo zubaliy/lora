@@ -12,9 +12,9 @@ import com.athome.zubaliy.sqlite.manager.ActivityLogManager;
 import com.athome.zubaliy.util.Utils;
 
 /**
- * Created by zubaliy on 06/11/14.
- * <p/>
  * This broadcast service will write the date to db when bluetooth (dis)connect event occurs.
+ *
+ * @author Andriy Zubaliy
  */
 
 public class BroadcastService extends BroadcastReceiver {

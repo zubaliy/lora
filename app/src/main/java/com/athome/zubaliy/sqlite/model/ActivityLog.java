@@ -8,7 +8,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * Created by zubaliy on 26/10/14.
+ * @author Andriy Zubaliy
  */
 
 @DatabaseTable(tableName = "ActivityLog")

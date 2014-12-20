@@ -14,7 +14,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.GregorianCalendar;
 
 /**
- * Created by zubaliy on 02/12/14.
+ *
+ * @author Andriy Zubaliy
  */
 @EBean
 public class Engine {

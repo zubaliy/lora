@@ -11,7 +11,8 @@ import java.util.Set;
 /**
  * Bluetooth controller
  * <p/>
- * Created by zubaliy on 28/10/14.
+ *
+ * @author Andriy Zubaliy
  */
 public class Bluetooth {
 
