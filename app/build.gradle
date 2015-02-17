@@ -90,7 +90,7 @@ dependencies {
     compile "com.j256.ormlite:ormlite-core:$OrmLiteVersion"
 
     apt "org.projectlombok:lombok:$LombokVersion"
-    compile "org.projectlombok:lombok:$LombokVersion"
+    provided "org.projectlombok:lombok:$LombokVersion"
 
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
