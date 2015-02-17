@@ -115,6 +115,9 @@ public class Engine {
             result = (difference < NumberUtils.toInt(Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
         }
 
+
         return result;
     }
+
+
 }

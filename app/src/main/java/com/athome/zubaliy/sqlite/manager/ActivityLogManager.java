@@ -13,7 +13,9 @@ import java.util.List;
 import lombok.Getter;
 
 /**
- * Created by zubaliy on 26/10/14.
+ * Provides basic methods to manage the logs in db. Add, Update, Retrieve, ...
+ *
+ * @author zubaliy
  */
 public class ActivityLogManager {
 
@@ -98,5 +100,7 @@ public class ActivityLogManager {
             Log.d(TAG, e.toString());
         }
     }
+
+
 
 }
