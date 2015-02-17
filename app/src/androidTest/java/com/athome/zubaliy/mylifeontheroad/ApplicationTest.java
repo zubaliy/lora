@@ -1,13 +1,22 @@
 package com.athome.zubaliy.mylifeontheroad;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
 
-/**
- * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
- */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+@RunWith(RobolectricTestRunner.class)
+public class ApplicationTest {
+    @Test
+    public void shouldHaveApplicationName() {
+        String appName = new MainActivity().getResources().getString(R.string.app_name);
+        assertThat(appName, equalTo("My life on the road"));
     }
+
+
 }
+
+
