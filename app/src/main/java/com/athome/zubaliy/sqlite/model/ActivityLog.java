@@ -8,6 +8,10 @@ import java.util.Date;
 import lombok.Data;
 
 /**
+ * Entity.
+ * <p/>
+ * Difference is calculated when in setDisconnected()
+ *
  * @author Andriy Zubaliy
  */
 
@@ -36,6 +40,11 @@ public class ActivityLog {
      */
     public ActivityLog(Date connected) {
         this.connected = connected;
+    }
+
+    public void setDisconnected(final Date disconnected) {
+        this.disconnected = disconnected;
+        this.difference = (int) (disconnected.getTime() - connected.getTime());
     }
 
 }

@@ -74,7 +74,6 @@ public class Engine {
 
         ActivityLog log = ActivityLogManager.getInstance().getLastLog();
         log.setDisconnected(now.getTime());
-        log.setDifference((int) (log.getDisconnected().getTime() - log.getConnected().getTime()));
         ActivityLogManager.getInstance().updateLog(log);
 
         Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
