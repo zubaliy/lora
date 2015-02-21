@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         Log.i(TAG, "Activity started");
 
         url = BuildConfig.LINK_UPLOAD_ACTIVITYLOGS_LOCAL;
-        gson = new GsonBuilder().setDateFormat(BuildConfig.SDF.toPattern()).create();
+        gson = new GsonBuilder().setDateFormat(BuildConfig.SIMPLEDATEFORMAT.toPattern()).create();
 
         ActivityLogManager.init(this);
     }
