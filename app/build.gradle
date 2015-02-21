@@ -25,8 +25,11 @@ android {
         versionCode 1
         versionName '0.0.1'
 
+        def SimpleDateFormat = "yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'"
+
         /* Default MongoDB and JavaScript ISO date format */
-        buildConfigField "java.text.SimpleDateFormat", "SDF", "new java.text.SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\")"
+        buildConfigField "java.text.SimpleDateFormat", "SIMPLEDATEFORMAT", "new java.text.SimpleDateFormat(\"$SimpleDateFormat\")"
+        buildConfigField "String", "DATEFORMAT", "\"$SimpleDateFormat\""
 
         /* Keys */
         buildConfigField "String", "KEY_DEVICE_MAC_ADDRESS", "\"device_mac_address\""
@@ -108,22 +111,22 @@ dependencies {
 
     androidTestCompile("junit:junit:$JUnitVersion")
     androidTestCompile("org.robolectric:robolectric:$RobolectricVersion") {
-          exclude module: 'classworlds'
-          exclude module: 'commons-logging'
-          exclude module: 'httpclient'
-          exclude module: 'maven-artifact'
-          exclude module: 'maven-artifact-manager'
-          exclude module: 'maven-error-diagnostics'
-          exclude module: 'maven-model'
-          exclude module: 'maven-project'
-          exclude module: 'maven-settings'
-          exclude module: 'plexus-container-default'
-          exclude module: 'plexus-interpolation'
-          exclude module: 'plexus-utils'
-          exclude module: 'support-v4'
-          exclude module: 'wagon-file'
-          exclude module: 'wagon-http-lightweight'
-          exclude module: 'wagon-provider-api'
+        exclude module: 'classworlds'
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
+        exclude module: 'maven-artifact'
+        exclude module: 'maven-artifact-manager'
+        exclude module: 'maven-error-diagnostics'
+        exclude module: 'maven-model'
+        exclude module: 'maven-project'
+        exclude module: 'maven-settings'
+        exclude module: 'plexus-container-default'
+        exclude module: 'plexus-interpolation'
+        exclude module: 'plexus-utils'
+        exclude module: 'support-v4'
+        exclude module: 'wagon-file'
+        exclude module: 'wagon-http-lightweight'
+        exclude module: 'wagon-provider-api'
     }
 
 }
