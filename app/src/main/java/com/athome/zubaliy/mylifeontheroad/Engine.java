@@ -43,7 +43,7 @@ public class Engine {
                 Log.d(TAG, String.format("Short drive detected, less than %s ms",
                         Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
                 Log.d(TAG, "Short drive => delete last inserted row.");
-                ActivityLogManager.getInstance().deleteLastRow();
+                ActivityLogManager.getInstance().deleteLastLog();
             } else {
                 disconnected();
             }

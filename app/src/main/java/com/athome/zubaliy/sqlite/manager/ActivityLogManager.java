@@ -93,7 +93,7 @@ public class ActivityLogManager {
         return logs.get(0);
     }
 
-    public void deleteLastRow(){
+    public void deleteLastLog(){
         try {
             helper.getActivityLogDao().delete(getLastLog());
         } catch (SQLException e) {
