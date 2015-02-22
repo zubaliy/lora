@@ -30,6 +30,7 @@ android {
         /* Default MongoDB and JavaScript ISO date format */
         buildConfigField "java.text.SimpleDateFormat", "SIMPLEDATEFORMAT", "new java.text.SimpleDateFormat(\"$SimpleDateFormat\")"
         buildConfigField "String", "DATEFORMAT", "\"$SimpleDateFormat\""
+        buildConfigField "String", "DATEFORMAT_FOR_TEST", "\"yyyy-MM-dd HH:mm:ss\""
 
         /* Keys */
         buildConfigField "String", "KEY_DEVICE_MAC_ADDRESS", "\"device_mac_address\""
