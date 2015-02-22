@@ -16,7 +16,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import lombok.AccessLevel;
 import lombok.SneakyThrows;
@@ -25,6 +27,7 @@ import lombok.experimental.FieldDefaults;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -50,7 +53,7 @@ public class ActivityLogManagerTest {
         log1 = new ActivityLog();
         log1.setConnected(DateUtils.parseDate("2015-01-01 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
         log1.setDisconnected(DateUtils.parseDate("2015-01-01 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
-        ActivityLogAdvancedManager.getInstance().addLog(log1);
+        logManager.addLog(log1);
 
         log2 = new ActivityLog();
         log2.setConnected(DateUtils.parseDate("2015-01-02 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
@@ -156,6 +159,63 @@ public class ActivityLogManagerTest {
 
         Date laterDate = DateUtils.parseDate("2015-01-01 02:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
         assertEquals(initialDbSize - 1, logManager.findLogsFromDate(laterDate).size());
+    }
+
+    @Test
+    public void testCreateZeroToday() {
+        Date today = logManager.createZeroToday();
+        Date expected = createTodayDate();
+        assertEquals(expected, today);
+    }
+
+    @Test
+    public void testCreateZeroThisWeek() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(logManager.createZeroThisWeek());
+
+        assertEquals(createMondayThisWeek(), c.getTime());
+        assertEquals(Calendar.MONDAY, c.get(Calendar.DAY_OF_WEEK));
+    }
+
+    @Test
+    public void testCreateZeroThisMonth() {
+        assertEquals(createThisMonthFirstDay(), logManager.createZeroThisMonth());
+    }
+
+    @Test
+    public void testCreateZeroThisYear() {
+        assertEquals(createThisYearFirstDay(), logManager.createZeroThisYear());
+
+    }
+
+    @Test
+    public void testGetActivityLogs() {
+        // TODO create test
+        assertTrue(false);
+    }
+
+    private Date createTodayDate() {
+        return DateUtils.truncate(new Date(), Calendar.DATE);
+    }
+
+    private Date createMondayThisWeek() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(logManager.createZeroThisWeek());
+        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return c.getTime();
+    }
+
+    private Date createThisMonthFirstDay() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(logManager.createZeroThisWeek());
+        c.set(Calendar.DAY_OF_MONTH, 1);
+
+        return c.getTime();
+    }
+
+    @SneakyThrows
+    private Date createThisYearFirstDay() {
+        return DateUtils.parseDate(new Date().getYear() + 1900 + "-01-01 00:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
     }
 
 }

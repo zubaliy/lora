@@ -128,20 +128,20 @@ public class ActivityLogManager {
         return result;
     }
 
-    public List<ActivityLog> getActivityLogs(final String period, final Integer value) {
+    public List<ActivityLog> getActivityLogs(final Period period, final Integer value) {
         List<ActivityLog> result = new ArrayList<>();
 
         switch (period) {
-            case "days":
+            case DAYS:
                 result = findLogsFromDate(DateUtils.addDays(createZeroToday(), -value));
                 break;
-            case "weeks":
+            case WEEKS:
                 result = findLogsFromDate(DateUtils.addWeeks(createZeroThisWeek(), -value));
                 break;
-            case "months":
+            case MONTHS:
                 result = findLogsFromDate(DateUtils.addMonths(createZeroThisMonth(), -value));
                 break;
-            case "years":
+            case YEARS:
                 result = findLogsFromDate(DateUtils.addYears(createZeroThisYear(), -value));
                 break;
             default:
@@ -157,6 +157,8 @@ public class ActivityLogManager {
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
+
+        c.setFirstDayOfWeek(Calendar.MONDAY);
 
         return c;
     }
