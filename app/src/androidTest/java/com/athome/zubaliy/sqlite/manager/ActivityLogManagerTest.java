@@ -84,17 +84,17 @@ public class ActivityLogManagerTest {
     }
 
     @Test
-    public void testGetInstance() throws Exception {
+    public void testGetInstance() {
         assertNotNull(ActivityLogManager.getInstance());
     }
 
     @Test
-    public void testGetAllLogs() throws Exception {
+    public void testGetAllLogs() {
         assertEquals(initialDbSize, logManager.getAllLogs().size());
     }
 
     @Test
-    public void testGetLogWithId() throws Exception {
+    public void testGetLogWithId() {
         ActivityLog result = logManager.getLogWithId(log2.getId());
 
         assertNotNull(result);
@@ -105,7 +105,7 @@ public class ActivityLogManagerTest {
     }
 
     @Test
-    public void testAddLog() throws Exception {
+    public void testAddLog() {
         Integer newId = logManager.getLastLog().getId() + 1;
         logManager.addLog(new ActivityLog());
 
@@ -115,7 +115,7 @@ public class ActivityLogManagerTest {
     }
 
     @Test
-    public void testUpdateLog() throws Exception {
+    public void testUpdateLog() {
         ActivityLog lastLog = logManager.getLastLog();
         Integer newValue = 500;
         assertNotEquals(newValue, lastLog.getDifference());
@@ -128,21 +128,21 @@ public class ActivityLogManagerTest {
     }
 
     @Test
-    public void testGetLastLog() throws Exception {
+    public void testGetLastLog() {
         ActivityLog result = logManager.getLastLog();
 
         assertEquals(log3.getId(), result.getId());
     }
 
     @Test
-    public void testDeleteLastLog() throws Exception {
+    public void testDeleteLastLog() {
         logManager.deleteLastLog();
 
         assertEquals(initialDbSize - 1, logManager.getAllLogs().size());
     }
 
     @Test
-    public void testGetHelper() throws Exception {
+    public void testGetHelper() {
         assertNotNull(logManager.getHelper());
     }
 }
