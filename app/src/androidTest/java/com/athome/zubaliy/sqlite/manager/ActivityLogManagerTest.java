@@ -65,8 +65,7 @@ public class ActivityLogManagerTest {
 
     @Test
     public void testGetInstance() throws Exception {
-        logManager = ActivityLogManager.getInstance();
-        assertNotNull(logManager);
+        assertNotNull(ActivityLogManager.getInstance());
 
     }
 
