@@ -23,6 +23,9 @@ public class ActivityLogManager {
 
     static private ActivityLogManager instance;
 
+    @Getter
+    private DatabaseHelper helper;
+
     static public void init(Context ctx) {
         if (null == instance) {
             instance = new ActivityLogManager(ctx);
@@ -33,8 +36,6 @@ public class ActivityLogManager {
         return instance;
     }
 
-    @Getter
-    private DatabaseHelper helper;
 
     private ActivityLogManager(Context ctx) {
         helper = new DatabaseHelper(ctx);
