@@ -36,6 +36,11 @@ public class ActivityLogManager {
         return instance;
     }
 
+    static public void clearInstance() {
+        instance = null;
+    }
+
+
 
     private ActivityLogManager(Context ctx) {
         helper = new DatabaseHelper(ctx);
