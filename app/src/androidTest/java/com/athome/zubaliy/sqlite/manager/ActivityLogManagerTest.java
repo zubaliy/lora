@@ -4,9 +4,11 @@ package com.athome.zubaliy.sqlite.manager;
 import android.content.Context;
 import android.util.Log;
 
+import com.athome.zubaliy.mylifeontheroad.BuildConfig;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,13 +16,12 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Date;
-
 import lombok.AccessLevel;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -34,25 +35,26 @@ public class ActivityLogManagerTest {
     ActivityLog log3;
 
     @Before
-    public void init() {
+    @SneakyThrows
+    public void setup() {
         context = Robolectric.application.getApplicationContext();
         ActivityLogManager.init(context);
         logManager = ActivityLogManager.getInstance();
 
 
         log1 = new ActivityLog();
-        log1.setConnected(new Date());
-        log1.setDisconnected(new Date());
-        logManager.addLog(log1);
+        log1.setConnected(DateUtils.parseDate("2015-01-01 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
+        log1.setDisconnected(DateUtils.parseDate("2015-01-01 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
+        ActivityLogAdvancedManager.getInstance().addLog(log1);
 
         log2 = new ActivityLog();
-        log2.setConnected(new Date());
-        log2.setDisconnected(new Date());
+        log2.setConnected(DateUtils.parseDate("2015-01-02 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
+        log2.setDisconnected(DateUtils.parseDate("2015-01-02 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
         logManager.addLog(log2);
 
         log3 = new ActivityLog();
-        log3.setConnected(new Date());
-        log3.setDisconnected(new Date());
+        log3.setConnected(DateUtils.parseDate("2015-01-03 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
+        log3.setDisconnected(DateUtils.parseDate("2015-01-03 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
         logManager.addLog(log3);
 
         //TODO Id is not being set by ORM lite
@@ -79,7 +81,6 @@ public class ActivityLogManagerTest {
     @Test
     public void testGetInstance() throws Exception {
         assertNotNull(ActivityLogManager.getInstance());
-
     }
 
     @Test
@@ -93,18 +94,18 @@ public class ActivityLogManagerTest {
         assertNotNull(result);
         Log.i(TAG, result.toString());
         assertEquals(log2.getId(), result.getId());
-        //TODO? java.lang.AssertionError: expected:<1424534724744> but was:<1424534724720>
-        //assertEquals(log2.getConnected().getTime(), result.getConnected().getTime());
-        //assertEquals(log2.getDisconnected().getTime(), result.getDisconnected().getTime());
+        assertEquals(log2.getConnected().getTime(), result.getConnected().getTime());
+        assertEquals(log2.getDisconnected().getTime(), result.getDisconnected().getTime());
         assertEquals(log2.getDifference(), result.getDifference());
     }
 
     @Test
     public void testAddLog() throws Exception {
-        // TODO? the log is being added only in @Before
-        // logManager.addLog(new ActivityLog());
+        Integer newId = logManager.getLastLog().getId() + 1;
+        logManager.addLog(new ActivityLog());
+
         ActivityLog result = logManager.getLastLog();
-        assertEquals(log3.getId(), result.getId());
+        assertEquals(newId, result.getId());
     }
 
     @Test
