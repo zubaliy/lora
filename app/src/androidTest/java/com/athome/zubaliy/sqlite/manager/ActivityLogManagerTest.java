@@ -16,6 +16,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Date;
+
 import lombok.AccessLevel;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
@@ -145,4 +147,15 @@ public class ActivityLogManagerTest {
     public void testGetHelper() {
         assertNotNull(logManager.getHelper());
     }
+
+    @Test
+    @SneakyThrows
+    public void testFindLogsFromDate() {
+        Date startDate = DateUtils.parseDate("2015-01-01 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
+        assertEquals(initialDbSize, logManager.findLogsFromDate(startDate).size());
+
+        Date laterDate = DateUtils.parseDate("2015-01-01 02:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
+        assertEquals(initialDbSize - 1, logManager.findLogsFromDate(laterDate).size());
+    }
+
 }
