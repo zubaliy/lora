@@ -21,6 +21,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
@@ -33,6 +34,8 @@ public class ActivityLogManagerTest {
     ActivityLog log1;
     ActivityLog log2;
     ActivityLog log3;
+
+    int initialDbSize;
 
     @Before
     @SneakyThrows
@@ -61,6 +64,8 @@ public class ActivityLogManagerTest {
         log1.setId(1);
         log2.setId(2);
         log3.setId(3);
+
+        initialDbSize = 3;
     }
 
     @After
@@ -85,14 +90,14 @@ public class ActivityLogManagerTest {
 
     @Test
     public void testGetAllLogs() throws Exception {
-        assertEquals(3, logManager.getAllLogs().size());
+        assertEquals(initialDbSize, logManager.getAllLogs().size());
     }
 
     @Test
     public void testGetLogWithId() throws Exception {
         ActivityLog result = logManager.getLogWithId(log2.getId());
+
         assertNotNull(result);
-        Log.i(TAG, result.toString());
         assertEquals(log2.getId(), result.getId());
         assertEquals(log2.getConnected().getTime(), result.getConnected().getTime());
         assertEquals(log2.getDisconnected().getTime(), result.getDisconnected().getTime());
@@ -105,29 +110,35 @@ public class ActivityLogManagerTest {
         logManager.addLog(new ActivityLog());
 
         ActivityLog result = logManager.getLastLog();
+
         assertEquals(newId, result.getId());
     }
 
     @Test
     public void testUpdateLog() throws Exception {
         ActivityLog lastLog = logManager.getLastLog();
-        lastLog.setDifference(500);
+        Integer newValue = 500;
+        assertNotEquals(newValue, lastLog.getDifference());
+
+        lastLog.setDifference(newValue);
         logManager.updateLog(lastLog);
         ActivityLog result = logManager.getLastLog();
-        assertEquals(lastLog.getDifference(), result.getDifference());
+
+        assertEquals(newValue, result.getDifference());
     }
 
     @Test
     public void testGetLastLog() throws Exception {
         ActivityLog result = logManager.getLastLog();
+
         assertEquals(log3.getId(), result.getId());
     }
 
     @Test
     public void testDeleteLastLog() throws Exception {
-        // TODO? the log is being deleted only in @Before
-        //logManager.deleteLastLog();
-        //assertEquals(2, logManager.getAllLogs().size());
+        logManager.deleteLastLog();
+
+        assertEquals(initialDbSize - 1, logManager.getAllLogs().size());
     }
 
     @Test
