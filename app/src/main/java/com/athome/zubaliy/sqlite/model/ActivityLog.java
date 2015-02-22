@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * Entity.
@@ -18,6 +19,10 @@ import lombok.Data;
 @DatabaseTable(tableName = "ActivityLog")
 @Data
 public class ActivityLog {
+
+    public static final transient String FIELD_CONECTED = "connected";
+    public static final transient String FIELD_DISCONNECTED = "disconnected";
+    public static final transient String FIELD_DIFFERENCE = "difference";
 
     @DatabaseField(generatedId = true)
     // exclude this field from serialisation
