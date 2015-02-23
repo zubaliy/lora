@@ -2,7 +2,6 @@ package com.athome.zubaliy.sqlite.manager;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.athome.zubaliy.mylifeontheroad.BuildConfig;
 import com.athome.zubaliy.sqlite.model.ActivityLog;
@@ -19,6 +18,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.SneakyThrows;
@@ -188,12 +188,6 @@ public class ActivityLogManagerTest {
 
     }
 
-    @Test
-    public void testGetActivityLogs() {
-        // TODO create test
-        assertTrue(false);
-    }
-
     private Date createTodayDate() {
         return DateUtils.truncate(new Date(), Calendar.DATE);
     }
@@ -218,4 +212,79 @@ public class ActivityLogManagerTest {
         return DateUtils.parseDate(new Date().getYear() + 1900 + "-01-01 00:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
     }
 
+    @Test
+    public void testGetActivityLogsForLastPeriod_DAYS() {
+        fillDbWithLogsForTheLastThreeDays();
+
+        List<ActivityLog> result = logManager.getActivityLogsForLast(1, Period.DAYS);
+        assertNotNull(result);
+        assertEquals(1, result.size());
+
+        result = logManager.getActivityLogsForLast(2, Period.DAYS);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        result = logManager.getActivityLogsForLast(3, Period.DAYS);
+        assertNotNull(result);
+        assertEquals(3, result.size());
+    }
+
+    @Test
+    public void testGetActivityLogsForLastPeriod_WEEKS() {
+        fillDbWithLogsForTheLastThreeDays();
+        Date today = createTodayDate();
+        Calendar c = new GregorianCalendar();
+        c.setTime(today);
+
+        List<ActivityLog> result = logManager.getActivityLogsForLast(1, Period.WEEKS);
+
+        assertNotNull(result);
+
+        int k;
+        switch (c.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.MONDAY:
+                k = 1;
+                break;
+            case Calendar.TUESDAY:
+                k = 2;
+                break;
+            default:
+                k = 3;
+                break;
+        }
+
+        assertEquals(k, result.size());
+
+    }
+    @Test
+    public void testGetActivityLogsForLastPeriod_MONTHS() {
+        //TODO finish test
+    }
+
+    @Test
+    public void testGetActivityLogsForLastPeriod_YEARS() {
+        //TODO finish test
+    }
+
+    @SneakyThrows
+    private void fillDbWithLogsForTheLastThreeDays() {
+        Date date = createTodayDate();
+        Date dateOneHourLater = DateUtils.addHours(date, 1);
+
+        ActivityLog log1 = new ActivityLog();
+        log1.setConnected(date);
+        log1.setDisconnected(dateOneHourLater);
+
+        ActivityLog log2 = new ActivityLog();
+        log2.setConnected(DateUtils.addDays(date, -1));
+        log2.setDisconnected(DateUtils.addDays(dateOneHourLater, -1));
+
+        ActivityLog log3 = new ActivityLog();
+        log3.setConnected(DateUtils.addDays(date, -2));
+        log3.setDisconnected(DateUtils.addDays(dateOneHourLater, -3));
+
+        logManager.addLog(log1);
+        logManager.addLog(log2);
+        logManager.addLog(log3);
+    }
 }

@@ -128,26 +128,36 @@ public class ActivityLogManager {
         return result;
     }
 
-    public List<ActivityLog> getActivityLogs(final Period period, final Integer value) {
+    /**
+     * Gets all logs for the last period.
+     *
+     * @param value Should be gte 1. ONE means today, this week, this months, this year
+     * @param period enum
+     * @return list of logs
+     */
+    public List<ActivityLog> getActivityLogsForLast(final Integer value, final Period period) {
         List<ActivityLog> result = new ArrayList<>();
 
-        switch (period) {
-            case DAYS:
-                result = findLogsFromDate(DateUtils.addDays(createZeroToday(), -value));
-                break;
-            case WEEKS:
-                result = findLogsFromDate(DateUtils.addWeeks(createZeroThisWeek(), -value));
-                break;
-            case MONTHS:
-                result = findLogsFromDate(DateUtils.addMonths(createZeroThisMonth(), -value));
-                break;
-            case YEARS:
-                result = findLogsFromDate(DateUtils.addYears(createZeroThisYear(), -value));
-                break;
-            default:
-                break;
-        }
+        if (value >= 1) {
+            int k = value -1 ;
 
+            switch (period) {
+                case DAYS:
+                    result = findLogsFromDate(DateUtils.addDays(createZeroToday(), -k));
+                    break;
+                case WEEKS:
+                    result = findLogsFromDate(DateUtils.addWeeks(createZeroThisWeek(), -k));
+                    break;
+                case MONTHS:
+                    result = findLogsFromDate(DateUtils.addMonths(createZeroThisMonth(), -k));
+                    break;
+                case YEARS:
+                    result = findLogsFromDate(DateUtils.addYears(createZeroThisYear(), -k));
+                    break;
+                default:
+                    break;
+            }
+        }
         return result;
     }
 
