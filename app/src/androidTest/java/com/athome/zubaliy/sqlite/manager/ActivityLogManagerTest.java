@@ -51,18 +51,18 @@ public class ActivityLogManagerTest {
 
 
         log1 = new ActivityLog();
-        log1.setConnected(DateUtils.parseDate("2015-01-01 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
-        log1.setDisconnected(DateUtils.parseDate("2015-01-01 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
+        log1.setConnected(DateUtils.parseDate("2013-10-16 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
+        log1.setDisconnected(DateUtils.parseDate("2013-10-16 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
         logManager.addLog(log1);
 
         log2 = new ActivityLog();
-        log2.setConnected(DateUtils.parseDate("2015-01-02 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
-        log2.setDisconnected(DateUtils.parseDate("2015-01-02 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
+        log2.setConnected(DateUtils.parseDate("2013-10-17 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
+        log2.setDisconnected(DateUtils.parseDate("2013-10-17 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
         logManager.addLog(log2);
 
         log3 = new ActivityLog();
-        log3.setConnected(DateUtils.parseDate("2015-01-03 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
-        log3.setDisconnected(DateUtils.parseDate("2015-01-03 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
+        log3.setConnected(DateUtils.parseDate("2013-10-18 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST));
+        log3.setDisconnected(DateUtils.parseDate("2013-10-18 23:59:59", BuildConfig.DATEFORMAT_FOR_TEST));
         logManager.addLog(log3);
 
         //TODO Id is not being set by ORM lite
@@ -154,10 +154,10 @@ public class ActivityLogManagerTest {
     @Test
     @SneakyThrows
     public void testFindLogsFromDate() {
-        Date startDate = DateUtils.parseDate("2015-01-01 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
+        Date startDate = DateUtils.parseDate("2013-10-16 01:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
         assertEquals(initialDbSize, logManager.findLogsFromDate(startDate).size());
 
-        Date laterDate = DateUtils.parseDate("2015-01-01 02:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
+        Date laterDate = DateUtils.parseDate("2013-10-16 02:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
         assertEquals(initialDbSize - 1, logManager.findLogsFromDate(laterDate).size());
     }
 
@@ -256,14 +256,32 @@ public class ActivityLogManagerTest {
         assertEquals(k, result.size());
 
     }
+
     @Test
     public void testGetActivityLogsForLastPeriod_MONTHS() {
-        //TODO finish test
+        fillDbWithLogsForTheLastThreeMonths();
+
+        List<ActivityLog> result = logManager.getActivityLogsForLast(1, Period.MONTHS);
+        assertNotNull(result);
+        assertEquals(1, result.size());
+
+        result = logManager.getActivityLogsForLast(2, Period.MONTHS);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        result = logManager.getActivityLogsForLast(3, Period.MONTHS);
+        assertNotNull(result);
+        assertEquals(3, result.size());
     }
 
     @Test
     public void testGetActivityLogsForLastPeriod_YEARS() {
-        //TODO finish test
+        fillDbWithLogsForTheLastTwoYears();
+
+        List<ActivityLog> result = logManager.getActivityLogsForLast(1, Period.YEARS);
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
     }
 
     @SneakyThrows
@@ -281,7 +299,51 @@ public class ActivityLogManagerTest {
 
         ActivityLog log3 = new ActivityLog();
         log3.setConnected(DateUtils.addDays(date, -2));
-        log3.setDisconnected(DateUtils.addDays(dateOneHourLater, -3));
+        log3.setDisconnected(DateUtils.addDays(dateOneHourLater, -2));
+
+        logManager.addLog(log1);
+        logManager.addLog(log2);
+        logManager.addLog(log3);
+    }
+
+    @SneakyThrows
+    private void fillDbWithLogsForTheLastThreeMonths() {
+        Date date = createTodayDate();
+        Date dateOneHourLater = DateUtils.addHours(date, 1);
+
+        ActivityLog log1 = new ActivityLog();
+        log1.setConnected(date);
+        log1.setDisconnected(dateOneHourLater);
+
+        ActivityLog log2 = new ActivityLog();
+        log2.setConnected(DateUtils.addMonths(date, -1));
+        log2.setDisconnected(DateUtils.addMonths(dateOneHourLater, -1));
+
+        ActivityLog log3 = new ActivityLog();
+        log3.setConnected(DateUtils.addMonths(date, -2));
+        log3.setDisconnected(DateUtils.addMonths(dateOneHourLater, -2));
+
+        logManager.addLog(log1);
+        logManager.addLog(log2);
+        logManager.addLog(log3);
+    }
+
+    @SneakyThrows
+    private void fillDbWithLogsForTheLastTwoYears() {
+        Date date = createTodayDate();
+        Date dateOneHourLater = DateUtils.addHours(date, 1);
+
+        ActivityLog log1 = new ActivityLog();
+        log1.setConnected(date);
+        log1.setDisconnected(dateOneHourLater);
+
+        ActivityLog log2 = new ActivityLog();
+        log2.setConnected(DateUtils.addHours(date, 1));
+        log2.setDisconnected(DateUtils.addHours(dateOneHourLater, 1));
+
+        ActivityLog log3 = new ActivityLog();
+        log3.setConnected(DateUtils.addYears(date, -1));
+        log3.setDisconnected(DateUtils.addYears(dateOneHourLater, -1));
 
         logManager.addLog(log1);
         logManager.addLog(log2);
