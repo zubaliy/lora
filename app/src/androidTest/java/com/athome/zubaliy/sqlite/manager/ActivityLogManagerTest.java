@@ -27,7 +27,6 @@ import lombok.experimental.FieldDefaults;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -44,7 +43,7 @@ public class ActivityLogManagerTest {
 
     @Before
     @SneakyThrows
-    public void setup() {
+    public void setUp() {
         context = Robolectric.application.getApplicationContext();
         ActivityLogManager.init(context);
         logManager = ActivityLogManager.getInstance();
@@ -75,6 +74,7 @@ public class ActivityLogManagerTest {
 
     @After
     public void tearDown() {
+        // clean up logManager
         if (logManager.getHelper() != null) {
             logManager.getHelper().getActivityLogDao().clearObjectCache();
             logManager.getHelper().close();
@@ -164,7 +164,7 @@ public class ActivityLogManagerTest {
     @Test
     public void testCreateZeroToday() {
         Date today = logManager.createZeroToday();
-        Date expected = createTodayDate();
+        Date expected = createZeroToday();
         assertEquals(expected, today);
     }
 
@@ -179,36 +179,36 @@ public class ActivityLogManagerTest {
 
     @Test
     public void testCreateZeroThisMonth() {
-        assertEquals(createThisMonthFirstDay(), logManager.createZeroThisMonth());
+        assertEquals(createZeroThisMonth(), logManager.createZeroThisMonth());
     }
 
     @Test
     public void testCreateZeroThisYear() {
-        assertEquals(createThisYearFirstDay(), logManager.createZeroThisYear());
+        assertEquals(createZeroThisYear(), logManager.createZeroThisYear());
 
     }
 
-    private Date createTodayDate() {
+    private Date createZeroToday() {
         return DateUtils.truncate(new Date(), Calendar.DATE);
     }
 
     private Date createMondayThisWeek() {
         Calendar c = Calendar.getInstance();
-        c.setTime(logManager.createZeroThisWeek());
+        c.setTime(createZeroToday());
         c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         return c.getTime();
     }
 
-    private Date createThisMonthFirstDay() {
+    private Date createZeroThisMonth() {
         Calendar c = Calendar.getInstance();
-        c.setTime(logManager.createZeroThisWeek());
+        c.setTime(createZeroToday());
         c.set(Calendar.DAY_OF_MONTH, 1);
 
         return c.getTime();
     }
 
     @SneakyThrows
-    private Date createThisYearFirstDay() {
+    private Date createZeroThisYear() {
         return DateUtils.parseDate(new Date().getYear() + 1900 + "-01-01 00:00:00", BuildConfig.DATEFORMAT_FOR_TEST);
     }
 
@@ -232,7 +232,7 @@ public class ActivityLogManagerTest {
     @Test
     public void testGetActivityLogsForLastPeriod_WEEKS() {
         fillDbWithLogsForTheLastThreeDays();
-        Date today = createTodayDate();
+        Date today = createZeroToday();
         Calendar c = new GregorianCalendar();
         c.setTime(today);
 
@@ -286,7 +286,7 @@ public class ActivityLogManagerTest {
 
     @SneakyThrows
     private void fillDbWithLogsForTheLastThreeDays() {
-        Date date = createTodayDate();
+        Date date = createZeroToday();
         Date dateOneHourLater = DateUtils.addHours(date, 1);
 
         ActivityLog log1 = new ActivityLog();
@@ -308,7 +308,7 @@ public class ActivityLogManagerTest {
 
     @SneakyThrows
     private void fillDbWithLogsForTheLastThreeMonths() {
-        Date date = createTodayDate();
+        Date date = createZeroToday();
         Date dateOneHourLater = DateUtils.addHours(date, 1);
 
         ActivityLog log1 = new ActivityLog();
@@ -330,7 +330,7 @@ public class ActivityLogManagerTest {
 
     @SneakyThrows
     private void fillDbWithLogsForTheLastTwoYears() {
-        Date date = createTodayDate();
+        Date date = createZeroToday();
         Date dateOneHourLater = DateUtils.addHours(date, 1);
 
         ActivityLog log1 = new ActivityLog();
