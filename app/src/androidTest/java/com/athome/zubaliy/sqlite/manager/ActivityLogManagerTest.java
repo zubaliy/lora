@@ -195,6 +195,7 @@ public class ActivityLogManagerTest {
     private Date createMondayThisWeek() {
         Calendar c = Calendar.getInstance();
         c.setTime(createZeroToday());
+        c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         return c.getTime();
     }
@@ -202,6 +203,7 @@ public class ActivityLogManagerTest {
     private Date createZeroThisMonth() {
         Calendar c = Calendar.getInstance();
         c.setTime(createZeroToday());
+        c.setFirstDayOfWeek(Calendar.MONDAY);
         c.set(Calendar.DAY_OF_MONTH, 1);
 
         return c.getTime();
