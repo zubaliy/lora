@@ -53,7 +53,7 @@ public class Engine {
     /**
      * Writes a new record in db
      */
-    public void connected() {
+    private void connected() {
         Log.i(TAG, "connected");
 
         GregorianCalendar calendar = new GregorianCalendar();
@@ -67,7 +67,7 @@ public class Engine {
     /**
      * Adds to the last record in db the disconnection time and calculates the difference.
      */
-    public void disconnected() {
+    private void disconnected() {
         Log.i(TAG, "disconnected");
 
         GregorianCalendar now = new GregorianCalendar();
@@ -83,7 +83,7 @@ public class Engine {
      * Verifies if it was just a short stop.
      * Calculate time elapsed from last disconnection.
      */
-    public boolean shortBreak() {
+    protected boolean shortBreak() {
         boolean result = false;
         if (NumberUtils.isNumber(Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK))) {
             GregorianCalendar now = new GregorianCalendar();
@@ -102,7 +102,7 @@ public class Engine {
      * Verifies if it was just a short drive.
      * Calculate time elapsed from last connection
      */
-    public boolean shortJourney() {
+    protected boolean shortJourney() {
         boolean result = false;
         if (NumberUtils.isNumber(Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY))) {
             GregorianCalendar now = new GregorianCalendar();
