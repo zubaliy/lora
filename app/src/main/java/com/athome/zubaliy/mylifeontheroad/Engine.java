@@ -11,15 +11,32 @@ import org.androidannotations.annotations.EBean;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.util.Date;
 import java.util.GregorianCalendar;
 
+import lombok.Setter;
+
 /**
- *
  * @author Andriy Zubaliy
  */
 @EBean
 public class Engine {
     private static final String TAG = Engine.class.getSimpleName();
+
+    @Setter
+    private ActivityLogManager logManager;
+
+    @Setter
+    private int shortBreak;
+
+    @Setter
+    private int shortJourney;
+
+    public void init(final ActivityLogManager activityLogManager, final int shortBreak, final int shortJourney) {
+        this.logManager = activityLogManager;
+        this.shortBreak = shortBreak;
+        this.shortJourney = shortJourney;
+    }
 
     /**
      * Handel intent action.
@@ -33,15 +50,15 @@ public class Engine {
     public void doTheWork(String intentAction, String mac) {
         if (StringUtils.equals("android.bluetooth.device.action.ACL_CONNECTED", intentAction)) {
             if (!shortBreak()) {
-                Log.d(TAG, String.format("Short stop detected, less than %s ms",
-                        Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK)));
+                Log.d(TAG, String.format("Short stop detected, less than %s ms", Utils.readPreferences(BuildConfig
+                        .KEY_SHORT_BREAK)));
                 Log.d(TAG, "Short stop => skip creating new row in db.");
                 connected();
             }
         } else if (StringUtils.equals("android.bluetooth.device.action.ACL_DISCONNECTED", intentAction)) {
             if (shortJourney()) {
-                Log.d(TAG, String.format("Short drive detected, less than %s ms",
-                        Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
+                Log.d(TAG, String.format("Short drive detected, less than %s ms", Utils.readPreferences(BuildConfig
+                        .KEY_SHORT_JOURNEY)));
                 Log.d(TAG, "Short drive => delete last inserted row.");
                 ActivityLogManager.getInstance().deleteLastLog();
             } else {
@@ -56,12 +73,10 @@ public class Engine {
     private void connected() {
         Log.i(TAG, "connected");
 
-        GregorianCalendar calendar = new GregorianCalendar();
-
-        ActivityLog log = new ActivityLog(calendar.getTime());
+        ActivityLog log = new ActivityLog(new Date());
         ActivityLogManager.getInstance().addLog(log);
 
-        Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
+        Log.d(TAG, ActivityLogManager.getInstance().getLastLog().toString());
     }
 
     /**
@@ -70,13 +85,11 @@ public class Engine {
     private void disconnected() {
         Log.i(TAG, "disconnected");
 
-        GregorianCalendar now = new GregorianCalendar();
+        ActivityLog lastLog = ActivityLogManager.getInstance().getLastLog();
+        lastLog.setDisconnected(new Date());
+        ActivityLogManager.getInstance().updateLog(lastLog);
 
-        ActivityLog log = ActivityLogManager.getInstance().getLastLog();
-        log.setDisconnected(now.getTime());
-        ActivityLogManager.getInstance().updateLog(log);
-
-        Log.i(TAG, ActivityLogManager.getInstance().getLastLog().toString());
+        Log.d(TAG, ActivityLogManager.getInstance().getLastLog().toString());
     }
 
     /**
@@ -85,16 +98,12 @@ public class Engine {
      */
     protected boolean shortBreak() {
         boolean result = false;
-        if (NumberUtils.isNumber(Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK))) {
-            GregorianCalendar now = new GregorianCalendar();
-            ActivityLog log = ActivityLogManager.getInstance().getLastLog();
-            long difference = now.getTime().getTime() - log.getDisconnected().getTime();
+        ActivityLog lastLog = logManager.getLastLog();
 
-            Log.d(TAG, String.format("Short Stop for: %s", String.valueOf(difference)));
+        long difference = System.currentTimeMillis() - lastLog.getDisconnected().getTime();
+        Log.d(TAG, String.format("Short Stop for: %s", String.valueOf(difference)));
 
-            result = (difference < NumberUtils.toInt(Utils.readPreferences(BuildConfig.KEY_SHORT_BREAK)));
-        }
-
+        result = (difference < this.shortBreak);
         return result;
     }
 
@@ -104,17 +113,12 @@ public class Engine {
      */
     protected boolean shortJourney() {
         boolean result = false;
-        if (NumberUtils.isNumber(Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY))) {
-            GregorianCalendar now = new GregorianCalendar();
-            ActivityLog log = ActivityLogManager.getInstance().getLastLog();
-            long difference = now.getTime().getTime() - log.getConnected().getTime();
+        ActivityLog lastLog = ActivityLogManager.getInstance().getLastLog();
 
-            Log.d(TAG, String.format("Short Drive for: %s", String.valueOf(difference)));
+        long difference = System.currentTimeMillis() - lastLog.getConnected().getTime();
+        Log.d(TAG, String.format("Short Drive for: %s", String.valueOf(difference)));
 
-            result = (difference < NumberUtils.toInt(Utils.readPreferences(BuildConfig.KEY_SHORT_JOURNEY)));
-        }
-
-
+        result = (difference < this.shortJourney);
         return result;
     }
 
